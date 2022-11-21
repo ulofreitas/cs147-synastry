@@ -27,6 +27,7 @@ Next Steps (feel free to add to this!):
     - call navigate to updated "search" value if its one of the mocks, otherwise it does nothing (only direct searches should work)
 
 - "Create planet" functionality (correct me if I'm wrong)
+- Planet home, status and log pages
 
 - Style the app :)
 

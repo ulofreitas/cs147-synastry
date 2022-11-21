@@ -1,4 +1,4 @@
-import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList,ScrollView,TextInput } from "react-native";
+import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native-web";
 import { C } from "caniuse-lite/data/agents";
@@ -45,7 +45,7 @@ const windowHeight = Dimensions.get('window').height;
 */
 const SolarSystemData = [
   {
-   
+
     id: '1',
     img: require('../synastry_final_project/assets/add_community.png'),
     title: 'Planet 1',
@@ -85,15 +85,15 @@ const SolarSystemData = [
 export default function App() {
 
 
-    // two functions that update text / searched values --> This is used for the TextInput functionality  
-    let [text, setText] = useState('');
-    let [searched, searchText] = useState('');
+  // two functions that update text / searched values --> This is used for the TextInput functionality  
+  let [text, setText] = useState('');
+  let [searched, found_index, searchText] = useState({found_index: -1});
 
 
   // Function that renders each planet in the dictionary
 
   // item is the solarsystem dictionary!
-  const renderItem = ( item, navigation ) => {
+  const renderItem = (item, navigation) => {
 
     const img = item.img
     console.log(img)
@@ -104,24 +104,24 @@ export default function App() {
       <View style={styles.planet_rows}>
         <Text style={styles.planet_names}> {item.title}</Text>
 
-        
+
         <Pressable style={styles.button} onPress={() => {
           // navigates to planet screen when a planet is clicked, and passes the planet entry in the dictionary
 
           // i.e if planet 6 is clicked, all dict planet 6 values are passed
           navigation.navigate('Visiting a Planet', { solarSystem: item });
-         
+
         }}
         >
-            
-            <Image
-              style={styles.planet}
-              // This is the image that shows up for each planet, so if img is changed for a planet, so will
-              // its image
-              source={item.img}>
 
-            </Image>
-    
+          <Image
+            style={styles.planet}
+            // This is the image that shows up for each planet, so if img is changed for a planet, so will
+            // its image
+            source={item.img}>
+
+          </Image>
+
         </Pressable>
 
 
@@ -139,73 +139,73 @@ export default function App() {
 
       // These are all the rendered planets, rendered using a flatlist
       <SafeAreaView style={styles.container}>
-        <View style={styles.planets_visual}> 
+        <View style={styles.planets_visual}>
           <FlatList
             data={SolarSystemData}
-            renderItem ={({item}) => renderItem(item,navigation)}
+            renderItem={({ item }) => renderItem(item, navigation)}
             keyExtractor={item => item.id}
             numColumns={3}
           />
         </View>
 
 
-      {/* These is the button used for searching for a planet */}
-      
-      <View style={styles.navbuttons}>
-        
-        <Pressable style={styles.explore_button} onPress={() => {
-                      navigation.navigate('Search For a Planet');
-                    }}
-        >
-          
-            {/* This is the image used for searching for a planet */}
-          <Image
-            style={styles.button_image}
+        {/* These is the button used for searching for a planet */}
 
-            source={require('../synastry_final_project/assets/discover_communities.png')}>
+        <View style={styles.navbuttons}>
 
-          </Image>
-
-
-
-        
-        </Pressable>
-
-
-
-        {/* This is the button used for creating  a planet */}
-        <Pressable style={styles.add_button} onPress={() => {
-                      navigation.navigate('Create a Planet');
-                    }}
-        >
-          {/* This is the image used for creating  a planet */}
-          <Image
-            style={styles.button_image}
-
-            source={require('../synastry_final_project/assets/add_community.png')}>
-
-          </Image>
-
-
-
-        
-        </Pressable>
-
-
-
-
-
-
-      {/* This is the sun button, it is a pressable*/}
-      </View>
-
-        <View style={styles.sun}> 
-          <Pressable style={styles.button} onPress={() => {
-                     navigation.navigate('Your Personal Space');
-                  }}
+          <Pressable style={styles.explore_button} onPress={() => {
+            navigation.navigate('Search For a Planet');
+          }}
           >
-        
-           {/* This is the image used for the sun*/}
+
+            {/* This is the image used for searching for a planet */}
+            <Image
+              style={styles.button_image}
+
+              source={require('../synastry_final_project/assets/discover_communities.png')}>
+
+            </Image>
+
+
+
+
+          </Pressable>
+
+
+
+          {/* This is the button used for creating  a planet */}
+          <Pressable style={styles.add_button} onPress={() => {
+            navigation.navigate('Create a Planet');
+          }}
+          >
+            {/* This is the image used for creating  a planet */}
+            <Image
+              style={styles.button_image}
+
+              source={require('../synastry_final_project/assets/add_community.png')}>
+
+            </Image>
+
+
+
+
+          </Pressable>
+
+
+
+
+
+
+          {/* This is the sun button, it is a pressable*/}
+        </View>
+
+        <View style={styles.sun}>
+          <Pressable style={styles.button} onPress={() => {
+            navigation.navigate('Your Personal Space');
+          }}
+          >
+
+            {/* This is the image used for the sun*/}
             <Image
               style={styles.sun_image}
 
@@ -214,7 +214,7 @@ export default function App() {
             </Image>
           </Pressable>
         </View>
-        
+
 
 
       </SafeAreaView>
@@ -231,98 +231,98 @@ export default function App() {
 
 
       // The sun uses a scroll view so that you can scroll around
-    
-      <ScrollView style={styles.scrollView}> 
+
+      <ScrollView style={styles.scrollView}>
 
 
 
-      {/* This section handles the what's hot area, the text is the label, and the TextInput is
+        {/* This section handles the what's hot area, the text is the label, and the TextInput is
       to allow you to change what's shown -- make sure to populate this into a dict so changes
       persist*/}
 
-      <View style={styles.whatsHotHeader}>
+        <View style={styles.whatsHotHeader}>
 
 
-      <Text style={styles.whatsHotHeaderText}>
-            Tell us What's Hot!
-      </Text>
+          <Text style={styles.whatsHotHeaderText}>
+            Tell us what's hot!
+          </Text>
 
-      </View>
+        </View>
         <View style={styles.whatsHot}>
 
-        
-          
-      {/*TODO POPULATE THIS INTO A DICTIONARY */}
-        <TextInput
-        style={styles.whatsHot_textbox}
-        
-
-        placeholder={"This is a Placeholder"}
- 
-        onChange={newText => setText(newText)}    // uses the setText function and returns text, the updates input
-        value={text}  // text is the updated input --> store this in a dictionary and ensure change persists
-
-       
-      />
-        
-
-        
 
 
-      </View>
+          {/*TODO POPULATE THIS INTO A DICTIONARY */}
+          <TextInput
+            style={styles.whatsHot_textbox}
 
 
-      {/* This section defines three rows, each with two columns for pictures for people to upload
+            placeholder={"This is a Placeholder"}
+
+            onChange={newText => setText(newText)}    // uses the setText function and returns text, the updates input
+            value={text}  // text is the updated input --> store this in a dictionary and ensure change persists
+
+
+          />
+
+
+
+
+
+        </View>
+
+
+        {/* This section defines three rows, each with two columns for pictures for people to upload
       
       TODO:
       
       MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
       SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
-      <View style={styles.photos}>
-        <View style={styles.sunScreen_rows}>
+        <View style={styles.photos}>
+          <View style={styles.sunScreen_rows}>
 
-          <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the first photo</Text>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the first photo</Text>
+
+            </View>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the second photo</Text>
+            </View>
+
 
           </View>
-          <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the second photo</Text>
+          <View style={styles.sunScreen_rows}>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the third photo</Text>
+
+            </View>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the fourth photo</Text>
+            </View>
+
+
           </View>
 
-      
+
+
+          <View style={styles.sunScreen_rows}>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the fifth photo</Text>
+
+            </View>
+            <View style={styles.sunScreen_col}>
+              <UploadImage />
+              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the sixth photo</Text>
+            </View>
+
+          </View>
         </View>
-       <View style={styles.sunScreen_rows}> 
-       <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the third photo</Text>
-
-          </View>
-          <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the fourth photo</Text>
-          </View>
-
-
-        </View>
-
-
-
-      <View style={styles.sunScreen_rows}> 
-      <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the fifth photo</Text>
-
-          </View>
-          <View style={styles.sunScreen_col}>
-            <UploadImage/>
-            <Text style={{marginVertical:20,fontSize:16}}>This, is the sixth photo</Text>
-          </View>
-
-      </View>
-      </View>
 
       </ScrollView>
 
@@ -335,10 +335,10 @@ export default function App() {
   // to update the SolarSystemData dictionary when you create a planet 
 
   // FUNCTIONALITY: replace a planet with a new planet (ideally one the user wants to replace or an empty one)
-  function PlanetCreation(navigation ) {
+  function PlanetCreation(navigation) {
     return (
 
-      <Text> Hello This is the Planet Creation Screen :) </Text>
+      <Text style={{ textAlign: 'center' }}> Create a Planet </Text>
 
 
     )
@@ -346,21 +346,21 @@ export default function App() {
 
 
 
-    // Populate the info in the dictionary entry passed in
+  // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
 
 
 
-    
+
     const solar_system = route.params["solarSystem"]
     console.log(solar_system["id"])
-    
+
     return (
       <SafeAreaView style={styles.container}>
         <View>
 
-        {/* THIS IS AN EXAMPLE OF DEREFERNECING FROM A PARAMETER -- THE solar_system is OUR GLOBAL DICTIONARY*/}
-          <Text> You're in Planet {solar_system.id} </Text>
+          {/* THIS IS AN EXAMPLE OF DEREFERNECING FROM A PARAMETER -- THE solar_system is OUR GLOBAL DICTIONARY*/}
+          <Text style={{ color: 'white' }}> You're in Planet {solar_system.id} </Text>
         </View>
 
 
@@ -369,24 +369,41 @@ export default function App() {
 
   };
 
-
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
-  const PlanetSearch = ( navigation ) => {
+  const PlanetSearch = (navigation) => {
+    let searchText = (text) => {
+      for (let i = 0; i < SolarSystemData.length; i++) {
+        if (SolarSystemData[i].title.includes(text)) {
+          found_index = i;
+        }
+      }
+      found_index = -1;
+    }
+
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.search_container}>
         <View>
           <TextInput
-          style={styles.whatsHot_textbox}
-          placeholder="Tell Us Your Mantra!"
-          onChange={newText => searchText(newText)}
-          value={searched}
-
-          
-        />
-
-
-        
+            style={styles.search_textbox}
+            placeholder=" Tell us what you're looking for...   "
+            onChange={newText => searchText(newText)}
+            value={searched}
+          />
+          {found_index != -1 &&
+            <View>
+              <Text style={styles.planet_names}> {SolarSystemData[found_index].title}</Text>
+              <Pressable style={styles.button} onPress={() => {
+                navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
+              }}
+              >
+                <Image
+                  style={styles.planet}
+                  source={SolarSystemData[found_index].img}>
+                </Image>
+              </Pressable>
+            </View>
+          }
         </View>
 
       </SafeAreaView>
@@ -421,14 +438,33 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  search_container: {
+    backgroundColor: 'navy',
+    justifyContent: "center",
+    alignItems: "center",
+    height: '100%',
+    width: '100%',
+  },
+
+  search_textbox: {
+    backgroundColor: 'navy',
+    height: '25%',
+    width: 300,
+    fontSize: '20',
+    color: 'white',
+    textAlign: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 10,
+  },
 
   whatsHot_textbox: {
-    backgroundColor:'purple',
-    height:'100%',
-    width:'100%',
-    fontSize:'50',
-    color:'white',
-    textAlign:'center',
+    backgroundColor: 'purple',
+    height: '100%',
+    width: '100%',
+    fontSize: '50',
+    color: 'white',
+    textAlign: 'center',
   },
 
   scrollView: {
@@ -468,30 +504,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'navy',
   },
   sunScreen_rows: {
-    width:'100%',
-    height:'33.34%',
-    flexDirection:'row',
-    backgroundColor:'green',
+    width: '100%',
+    height: '33.34%',
+    flexDirection: 'row',
+    backgroundColor: 'green',
     alignContent: 'space-between',
 
   },
   sunScreen_col: {
-    width:'50%',
-    height:'100%',
-    backgroundColor:'red',
-    flexDirection:'column',
+    width: '50%',
+    height: '100%',
+    backgroundColor: 'red',
+    flexDirection: 'column',
     alignContent: 'space-between',
 
 
   },
-  planets_visual :{
-    width:'100%',
-    height:'60%',
-    backgroundColor:'navy',
+  planets_visual: {
+    width: '100%',
+    height: '60%',
+    backgroundColor: 'navy',
   },
   button: {
-    height:"100%",
-    width:"100%",
+    height: "100%",
+    width: "100%",
   },
   sun: {
     height: '20%',
@@ -500,42 +536,42 @@ const styles = StyleSheet.create({
 
   },
   whatsHot: {
-    width:'100%',
-    height:'20%',
+    width: '100%',
+    height: '20%',
   },
 
   whatsHotHeader: {
-    width:'100%',
-    height:'10%',
+    width: '100%',
+    height: '10%',
   },
   whatsHotHeaderText: {
-    fontSize:'24',
-    textAlign:'center',
+    fontSize: '24',
+    textAlign: 'center',
 
   },
   photos: {
-    height:'70%',
-    width:'100%',
-    
+    height: '70%',
+    width: '100%',
+
   },
   navbuttons: {
-    height:'20%',
-    width:'25%',
-    
+    height: '20%',
+    width: '25%',
+
   },
   explore_button: {
-    width:'75%',
-    height:'60%',
+    width: '75%',
+    height: '60%',
     resizeMode: 'contain',
-    position:'absolute',left:'-130%', bottom:'25%',
+    position: 'absolute', left: '-130%', bottom: '25%',
   },
 
 
   add_button: {
-    width:'75%',
-    height:'60%',
+    width: '75%',
+    height: '60%',
     resizeMode: 'contain',
-    position:'absolute',left:'155%', bottom: '25%',
+    position: 'absolute', left: '155%', bottom: '25%',
   }
 
 });
