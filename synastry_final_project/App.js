@@ -48,32 +48,32 @@ const SolarSystemData = [
    
     id: '1',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 1',
+    title: 'Planet 1',
   },
   {
     id: '2',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 2',
+    title: 'Planet 2',
   },
   {
     id: '3',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 3',
+    title: 'Planet 3',
   },
   {
     id: '4',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 4',
+    title: 'Planet 4',
   },
   {
     id: '5',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 5',
+    title: 'Planet 5',
   },
   {
     id: '6',
     img: require('../synastry_final_project/assets/add_community.png'),
-    title: 'Unexplored Planet 6',
+    title: 'Planet 6',
   },
 
 ];
@@ -145,7 +145,6 @@ export default function App() {
             renderItem ={({item}) => renderItem(item,navigation)}
             keyExtractor={item => item.id}
             numColumns={3}
-
           />
         </View>
 
@@ -161,7 +160,7 @@ export default function App() {
           
             {/* This is the image used for searching for a planet */}
           <Image
-            style={styles.planet}
+            style={styles.button_image}
 
             source={require('../synastry_final_project/assets/discover_communities.png')}>
 
@@ -181,9 +180,9 @@ export default function App() {
         >
           {/* This is the image used for creating  a planet */}
           <Image
-            style={styles.planet}
+            style={styles.button_image}
 
-            source={require('../synastry_final_project/assets/Sun.png')}>
+            source={require('../synastry_final_project/assets/add_community.png')}>
 
           </Image>
 
@@ -208,7 +207,7 @@ export default function App() {
         
            {/* This is the image used for the sun*/}
             <Image
-              style={styles.planet}
+              style={styles.sun_image}
 
               source={require('../synastry_final_project/assets/Sun.png')}>
 
@@ -443,18 +442,30 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
 
   },
+  button_image: {
+    borderRadius: 99999,
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+
+  },
+  sun_image: {
+    width: '100%',
+    height: '100%',
+
+  },
   planet_names: {
+    width: '100%',
+    textAlign: 'center',
     color: 'white',
   },
 
   planet_rows: {
-    width: '33.37%',
+    width: '33.3%',
+    height: "130%",
     alignContent: 'space-between',
-    height: "100%",
-    backgroundColor: 'blue',
-
-
-
+    backgroundColor: 'navy',
   },
   sunScreen_rows: {
     width:'100%',
@@ -476,15 +487,13 @@ const styles = StyleSheet.create({
   planets_visual :{
     width:'100%',
     height:'60%',
-    backgroundColor:'white',
+    backgroundColor:'navy',
   },
   button: {
-    backgroundColor: 'green',
     height:"100%",
     width:"100%",
   },
   sun: {
-    backgroundColor:'yellow',
     height: '20%',
     width: '100%',
 
@@ -515,18 +524,18 @@ const styles = StyleSheet.create({
     
   },
   explore_button: {
-    width:'90%',
+    width:'75%',
     height:'60%',
     resizeMode: 'contain',
-    position:'absolute',left:'-130%', bottom:'25%'
+    position:'absolute',left:'-130%', bottom:'25%',
   },
 
 
   add_button: {
-    width:'90%',
+    width:'75%',
     height:'60%',
     resizeMode: 'contain',
-    position:'absolute',left:'130%', bottom: '25%',
+    position:'absolute',left:'155%', bottom: '25%',
   }
 
 });
