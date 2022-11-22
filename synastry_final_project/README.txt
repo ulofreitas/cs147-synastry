@@ -26,8 +26,6 @@ Next Steps (feel free to add to this!):
     - make the mock planet screens
     - call navigate to updated "search" value if its one of the mocks, otherwise it does nothing (only direct searches should work)
 
-- Planet home, status and log pages
-
 - Style the app :)
 
 

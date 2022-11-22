@@ -638,7 +638,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
-  const PlanetSearch = (navigation) => {
+  const PlanetSearch = ({navigation}) => {
     let [searched, searchText] = useState('');
     let [found_index, setFoundIndex] = useState(-1);
 
