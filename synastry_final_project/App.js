@@ -81,7 +81,27 @@ const SolarSystemData = [
 
 const Polaroids = [
   {
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    image: null,
+    caption: 'Caption',
+  },
+  {
+    image: null,
+    caption: 'Caption',
+  },
+  {
+    image: null,
+    caption: 'Caption',
+  },
+  {
+    image: null,
+    caption: 'Caption',
+  },
+  {
+    image: null,
+    caption: 'Caption',
+  },
+  {
+    image: null,
     caption: 'Caption',
   },
 ]
@@ -234,6 +254,39 @@ export default function App() {
     let [whats_hot, setWhatsHot] = useState('');
     let [count, setCount] = useState(0);
 
+    // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
+    // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
+    const getImageFromUploader0 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[0].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader1 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[1].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader2 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[2].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader3 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[3].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader4 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[4].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader5 = (image_data) => {
+      console.log("getImageFromUploader");
+      Polaroids[5].image = image_data;
+      console.log(image_data);
+    }
+
     /*useEffect(() => {
       if (count > 0) {
         console.log("updated");
@@ -283,12 +336,12 @@ export default function App() {
           <View style={styles.sunScreen_rows}>
 
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image}  />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader1} image={Polaroids[1].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
@@ -296,12 +349,12 @@ export default function App() {
           </View>
           <View style={styles.sunScreen_rows}>
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader2} image={Polaroids[2].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader3} image={Polaroids[3].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
@@ -312,12 +365,12 @@ export default function App() {
 
           <View style={styles.sunScreen_rows}>
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader4} image={Polaroids[4].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
-              <UploadImage />
+              <UploadImage passImage={getImageFromUploader5} image={Polaroids[5].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
