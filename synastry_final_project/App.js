@@ -50,31 +50,85 @@ const SolarSystemData = [
     id: '1',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 1',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
   {
     id: '2',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 2',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
   {
     id: '3',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 3',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
   {
     id: '4',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 4',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
   {
     id: '5',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 5',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
   {
     id: '6',
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 6',
+    whats_hot: '',
+    polaroids: [
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+      { image: null, caption: 'Caption', },
+    ]
   },
 
 ];
@@ -320,7 +374,7 @@ export default function App() {
             defaultValue={global_whats_hot}
             onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
             onEndEditing={() => setGlobalWhatsHot(whats_hot)}
-            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+          //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
           />
         </View>
 
@@ -336,7 +390,7 @@ export default function App() {
           <View style={styles.sunScreen_rows}>
 
             <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image}  />
+              <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image} />
               <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
@@ -447,20 +501,134 @@ export default function App() {
 
   // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
+    let [whats_hot, setWhatsHot] = useState('');
 
-
+    const setPlanetWhatsHot = (id) => {
+      for (let i = 0; i < SolarSystemData.length; i++) {
+        if (SolarSystemData[i].id == id) {
+          SolarSystemData[i].whats_hot = whats_hot;
+        }
+      }
+    }
 
 
     const solar_system = route.params["solarSystem"]
     //console.log(solar_system["id"])
 
+
+
+    // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
+    // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
+    const getImageFromUploader0 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][0].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader1 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][1].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader2 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][2].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader3 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][3].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader4 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][4].image = image_data;
+      console.log(image_data);
+    }
+    const getImageFromUploader5 = (image_data) => {
+      console.log("getImageFromUploader");
+      solar_system["polaroids"][5].image = image_data;
+      console.log(image_data);
+    }
+
     return (
       <SafeAreaView style={styles.container}>
-        <View>
+        <ScrollView style={styles.scrollViewPlanetPage}>
 
-          {/* THIS IS AN EXAMPLE OF DEREFERNECING FROM A PARAMETER -- THE solar_system is OUR GLOBAL DICTIONARY*/}
-          <Text style={{ color: 'white' }}> You're at {solar_system.title} </Text>
-        </View>
+
+
+          {/* This section handles the what's hot area, the text is the label, and the TextInput is
+to allow you to change what's shown -- make sure to populate this into a dict so changes
+persist*/}
+
+          <View style={styles.whatsHotHeaderPlanetPage}>
+            <Text style={styles.whatsHotHeaderTextPlanetPage}>
+              Here's what's hot at {solar_system["title"]}:
+            </Text>
+            {/*TODO POPULATE THIS INTO A DICTIONARY */}
+            <TextInput
+              style={styles.whatsHot_textboxPlanetPage}
+              placeholder={" We're feeling...   "}
+              defaultValue={solar_system["whats_hot"]}
+              onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
+              onEndEditing={() => setPlanetWhatsHot(solar_system["id"])}
+            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+            />
+          </View>
+
+
+          {/* This section defines three rows, each with two columns for pictures for people to upload
+
+TODO:
+
+MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
+SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
+
+          <View style={styles.photosPlanetPage}>
+            <View style={styles.planetPage_rows}>
+
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader0} image={solar_system["polaroids"][0].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+
+              </View>
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader1} image={solar_system["polaroids"][1].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+              </View>
+
+
+            </View>
+            <View style={styles.planetPage_rows}>
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader2} image={solar_system["polaroids"][2].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+
+              </View>
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader3} image={solar_system["polaroids"][3].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+              </View>
+
+
+            </View>
+
+
+
+            <View style={styles.planetPage_rows}>
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader4} image={solar_system["polaroids"][4].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+
+              </View>
+              <View style={styles.planetPage_col}>
+                <UploadImage passImage={getImageFromUploader5} image={solar_system["polaroids"][5].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+              </View>
+
+            </View>
+          </View>
+
+        </ScrollView>
 
 
       </SafeAreaView>
@@ -594,8 +762,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
   },
+  whatsHot_textboxPlanetPage: {
+    backgroundColor: 'navy',
+    height: 50,
+    width: 300,
+    fontSize: '20',
+    color: 'white',
+    textAlign: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 10,
+    marginTop: 10,
+  },
 
   scrollView: {
+  },
+  scrollViewPlanetPage: {
   },
   planet: {
     borderRadius: '100%',
@@ -645,6 +827,22 @@ const styles = StyleSheet.create({
     alignItems: 'center'
 
   },
+  planetPage_rows: {
+    backgroundColor: 'navy',
+    width: '100%',
+    height: '33.34%',
+    flexDirection: 'row',
+    justifyContent: 'center'
+
+  },
+  planetPage_col: {
+    width: '50%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+
+  },
   planets_visual: {
     width: '100%',
     height: '55%',
@@ -678,6 +876,22 @@ const styles = StyleSheet.create({
   whatsHotHeaderText: {
     fontSize: '24',
     textAlign: 'center',
+
+  },
+
+  whatsHotHeaderPlanetPage: {
+    backgroundColor: 'navy',
+    width: '100%',
+    height: '20%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  whatsHotHeaderTextPlanetPage: {
+    fontSize: '24',
+    textAlign: 'center',
+    color: 'white'
 
   },
   photos: {
