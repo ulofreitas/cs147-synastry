@@ -56,7 +56,8 @@ const imageUploaderStyles=StyleSheet.create({
         bottom:0,
         backgroundColor:'lightgrey',
         width:'100%',
-        height:'25%',
+        height:'100%',
+        paddingTop: '40%',
     },
     uploadBtn:{
         display:'flex',

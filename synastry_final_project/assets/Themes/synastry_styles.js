@@ -1,5 +1,5 @@
 export const synastry_style = {
-  home_background: '#343d46',
+  home_background: 'navy',
   gray: '#B3B3B3',
   white: '#FFFFFF',
 };

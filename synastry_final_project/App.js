@@ -195,9 +195,9 @@ export default function App() {
 
 
 
-          {/* This is the sun button, it is a pressable*/}
         </View>
 
+        {/* This is the sun button, it is a pressable*/}
         <View style={styles.sun}>
           <Pressable style={styles.button} onPress={() => {
             navigation.navigate('Your Personal Space');
@@ -256,7 +256,7 @@ export default function App() {
             style={styles.whatsHot_textbox}
 
 
-            placeholder={"This is a Placeholder"}
+            placeholder={" Tell us how you're feeling...   "}
 
             onChange={newText => setText(newText)}    // uses the setText function and returns text, the updates input
             value={text}  // text is the updated input --> store this in a dictionary and ensure change persists
@@ -335,11 +335,34 @@ export default function App() {
 
   // FUNCTIONALITY: replace a planet with a new planet (ideally one the user wants to replace or an empty one)
   function PlanetCreation(navigation) {
+    let [name, setName] = useState('');
+
+    const createPlanet = () => {
+      let last_id = SolarSystemData[SolarSystemData.length - 1].id;
+      SolarSystemData.append({
+        id: toString(last_id + 1),
+        img: 'todo',
+        title: name,
+      })
+    }
+
     return (
+      <SafeAreaView style={styles.search_container}>
+        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+          <TextInput
+            style={styles.search_textbox}
+            placeholder=" Name your planet...   "
+            onChangeText={text => setName(text)}
+            value={name}
+          />
+          <View style={{ height: '5%' }} />
+          <UploadImage />
+          <Pressable style={styles.create_planet_button} onPress={createPlanet}>
+            <Text style={{ fontSize: 20 }}>Create!</Text>
+          </Pressable>
+        </View>
 
-      <Text style={{ textAlign: 'center' }}> Create a Planet </Text>
-
-
+      </SafeAreaView>
     )
   }
 
@@ -372,21 +395,26 @@ export default function App() {
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
   const PlanetSearch = (navigation) => {
     let [searched, searchText] = useState('');
-    let found_index = -1;
+    let [found_index, setFoundIndex] = useState(-1);
 
     useEffect(() => {
       console.log("searching")
       console.log(searched)
       console.log(found_index)
       if (searched.length != 0) {
-        for (let i = 0; i < SolarSystemData.length; i++) {
+        let i = 0;
+        for (i = 0; i < SolarSystemData.length; i++) {
           if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
-            found_index = i;
+            setFoundIndex(i);
             console.log("found " + i)
             break;
           }
         }
-        found_index = -1;
+        if (i == SolarSystemData.length) {
+          setFoundIndex(-1);
+        }
+      } else {
+        setFoundIndex(-1);
       }
     }, [searched])
 
@@ -400,7 +428,7 @@ export default function App() {
             value={searched}
           />
           {found_index != -1 &&
-            <View>
+            <View style={{ height: '50%' }}>
               <Text style={styles.planet_names}> {SolarSystemData[found_index].title}</Text>
               <Pressable style={styles.button} onPress={() => {
                 navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
@@ -449,15 +477,26 @@ const styles = StyleSheet.create({
   },
   search_container: {
     backgroundColor: 'navy',
-    justifyContent: "center",
+    justifyContent: "front",
     alignItems: "center",
     height: '100%',
     width: '100%',
   },
+  create_planet_button: {
+    backgroundColor: 'white',
+    padding: 10,
+    marginTop: 25,
+    color: 'black',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 20,
+  },
 
   search_textbox: {
     backgroundColor: 'navy',
-    height: '25%',
+    marginTop: 30,
+    marginBottom: 10,
+    height: 50,
     width: 300,
     fontSize: '20',
     color: 'white',
@@ -477,11 +516,9 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-    backgroundColor: 'pink',
   },
   planet: {
-    borderRadius: 99999,
-    backgroundColor: 'white',
+    borderRadius: '100%',
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
@@ -489,7 +526,6 @@ const styles = StyleSheet.create({
   },
   button_image: {
     borderRadius: 99999,
-    backgroundColor: 'white',
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
@@ -497,7 +533,7 @@ const styles = StyleSheet.create({
   },
   sun_image: {
     width: '100%',
-    height: '100%',
+    height: '150%',
 
   },
   planet_names: {
@@ -511,19 +547,18 @@ const styles = StyleSheet.create({
     height: "130%",
     alignContent: 'space-between',
     backgroundColor: 'navy',
+    paddingTop: 10,
   },
   sunScreen_rows: {
     width: '100%',
     height: '33.34%',
     flexDirection: 'row',
-    backgroundColor: 'green',
     alignContent: 'space-between',
 
   },
   sunScreen_col: {
     width: '50%',
     height: '100%',
-    backgroundColor: 'red',
     flexDirection: 'column',
     alignContent: 'space-between',
 
@@ -531,7 +566,7 @@ const styles = StyleSheet.create({
   },
   planets_visual: {
     width: '100%',
-    height: '60%',
+    height: '55%',
     backgroundColor: 'navy',
   },
   button: {
@@ -539,7 +574,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   sun: {
-    height: '20%',
+    height: '25%',
     width: '100%',
 
 
