@@ -5,13 +5,12 @@ import { C } from "caniuse-lite/data/agents";
 import { warmUpAsync } from "expo-web-browser";
 import { Ionicons } from '@expo/vector-icons';
 import { WebView } from "react-native-webview";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Dimensions } from 'react-native';
 import UploadImage from "./UploadImage";
 import React, { useState, useEffect } from 'react';
-
-
+import AddCommunity from '../synastry_final_project/assets/add_community.png';
 
 
 
@@ -43,36 +42,38 @@ const windowHeight = Dimensions.get('window').height;
 
   THE VARIABLE VALUE MUST INCLUDE THE RQUIRE FUNCTION IN IT, AND THE CALL MUST OMIT THE REQUIRE
 */
+
+// Usage of Image.resolveAssetSource to get URI based off of https://medium.com/swlh/how-to-obtain-a-uri-for-an-image-asset-in-react-native-with-expo-88dfbe1023b8
 const SolarSystemData = [
   {
 
     id: '1',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 1',
   },
   {
     id: '2',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 2',
   },
   {
     id: '3',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 3',
   },
   {
     id: '4',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 4',
   },
   {
     id: '5',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 5',
   },
   {
     id: '6',
-    img: require('../synastry_final_project/assets/add_community.png'),
+    img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 6',
   },
 
@@ -93,7 +94,7 @@ export default function App() {
 
   // item is the solarsystem dictionary!
   const renderItem = (item, navigation) => {
-
+    console.log(item.title)
     const img = item.img
     //console.log(img)
     return (
@@ -117,7 +118,7 @@ export default function App() {
             style={styles.planet}
             // This is the image that shows up for each planet, so if img is changed for a planet, so will
             // its image
-            source={item.img}>
+            source={{uri: item.img}}>
 
           </Image>
 
@@ -133,19 +134,21 @@ export default function App() {
 
   // This is the main solar system page
   function HomePage({ navigation }) {
+    const isFocused = useIsFocused();
+
     return (
-
-
       // These are all the rendered planets, rendered using a flatlist
       <SafeAreaView style={styles.container}>
-        <View style={styles.planets_visual}>
-          <FlatList
-            data={SolarSystemData}
-            renderItem={({ item }) => renderItem(item, navigation)}
-            keyExtractor={item => item.id}
-            numColumns={3}
-          />
-        </View>
+        {isFocused &&
+          <View style={styles.planets_visual}>
+            <FlatList
+              data={SolarSystemData}
+              renderItem={({ item }) => renderItem(item, navigation)}
+              keyExtractor={item => item.id}
+              numColumns={3}
+            />
+          </View>
+        }
 
 
         {/* These is the button used for searching for a planet */}
@@ -334,16 +337,33 @@ export default function App() {
   // to update the SolarSystemData dictionary when you create a planet 
 
   // FUNCTIONALITY: replace a planet with a new planet (ideally one the user wants to replace or an empty one)
-  function PlanetCreation(navigation) {
+  function PlanetCreation({ navigation }) {
+    let [replace, setReplace] = useState('');
     let [name, setName] = useState('');
+    let [image, setImage] = useState(null);
+
+    // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
+    const getImageFromUploader = (image_data) => {
+      console.log("getImageFromUploader");
+      console.log(image_data);
+      setImage(image_data);
+    }
 
     const createPlanet = () => {
-      let last_id = SolarSystemData[SolarSystemData.length - 1].id;
-      SolarSystemData.append({
+      /*let last_id = SolarSystemData[SolarSystemData.length - 1].id;
+      SolarSystemData.push({
         id: toString(last_id + 1),
         img: 'todo',
         title: name,
-      })
+      })*/
+      for (let i = 0; i < SolarSystemData.length; i++) {
+        if (SolarSystemData[i].title == replace) {
+          SolarSystemData[i].title = name;
+          SolarSystemData[i].img = image;
+        }
+      }
+      console.log(SolarSystemData);
+      navigation.navigate('Your Solar System');
     }
 
     return (
@@ -351,12 +371,18 @@ export default function App() {
         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
           <TextInput
             style={styles.search_textbox}
+            placeholder=" Planet to replace...   "
+            onChangeText={text => setReplace(text)}
+            value={replace}
+          />
+          <TextInput
+            style={styles.search_textbox}
             placeholder=" Name your planet...   "
             onChangeText={text => setName(text)}
             value={name}
           />
           <View style={{ height: '5%' }} />
-          <UploadImage />
+          <UploadImage passImage={getImageFromUploader} />
           <Pressable style={styles.create_planet_button} onPress={createPlanet}>
             <Text style={{ fontSize: 20 }}>Create!</Text>
           </Pressable>
@@ -494,8 +520,7 @@ const styles = StyleSheet.create({
 
   search_textbox: {
     backgroundColor: 'navy',
-    marginTop: 30,
-    marginBottom: 10,
+    marginTop: 20,
     height: 50,
     width: 300,
     fontSize: '20',
