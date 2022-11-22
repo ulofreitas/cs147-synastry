@@ -79,7 +79,12 @@ const SolarSystemData = [
 
 ];
 
-
+const Polaroids = [
+  {
+    img: Image.resolveAssetSource(AddCommunity).uri,
+    caption: 'Caption',
+  },
+]
 
 
 
@@ -88,6 +93,7 @@ export default function App() {
 
   // two functions that update text / searched values --> This is used for the TextInput functionality  
   let [text, setText] = useState('');
+  let [global_whats_hot, setGlobalWhatsHot] = useState('');
 
 
   // Function that renders each planet in the dictionary
@@ -118,7 +124,7 @@ export default function App() {
             style={styles.planet}
             // This is the image that shows up for each planet, so if img is changed for a planet, so will
             // its image
-            source={{uri: item.img}}>
+            source={{ uri: item.img }}>
 
           </Image>
 
@@ -225,12 +231,20 @@ export default function App() {
   }
 
   function SunPage({ navigation }) {
+    let [whats_hot, setWhatsHot] = useState('');
+    let [count, setCount] = useState(0);
 
+    /*useEffect(() => {
+      if (count > 0) {
+        console.log("updated");
+      }
+      setCount(count + 1);
+      setGlobalWhatsHot(whats_hot);
+    }, [whats_hot])*/
 
     // TODO:
     // Populate info in your dictionary in order to make sure changes persist
     return (
-
 
       // The sun uses a scroll view so that you can scroll around
 
@@ -243,34 +257,18 @@ export default function App() {
       persist*/}
 
         <View style={styles.whatsHotHeader}>
-
-
           <Text style={styles.whatsHotHeaderText}>
             Tell us what's hot!
           </Text>
-
-        </View>
-        <View style={styles.whatsHot}>
-
-
-
           {/*TODO POPULATE THIS INTO A DICTIONARY */}
           <TextInput
             style={styles.whatsHot_textbox}
-
-
-            placeholder={" Tell us how you're feeling...   "}
-
-            onChange={newText => setText(newText)}    // uses the setText function and returns text, the updates input
-            value={text}  // text is the updated input --> store this in a dictionary and ensure change persists
-
-
+            placeholder={" I'm feeling...   "}
+            defaultValue={global_whats_hot}
+            onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
+            onEndEditing={() => setGlobalWhatsHot(whats_hot)}
+            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
           />
-
-
-
-
-
         </View>
 
 
@@ -286,12 +284,12 @@ export default function App() {
 
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the first photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the second photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
 
@@ -299,12 +297,12 @@ export default function App() {
           <View style={styles.sunScreen_rows}>
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the third photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the fourth photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
 
@@ -315,12 +313,12 @@ export default function App() {
           <View style={styles.sunScreen_rows}>
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the fifth photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
 
             </View>
             <View style={styles.sunScreen_col}>
               <UploadImage />
-              <Text style={{ marginVertical: 20, fontSize: 16 }}>This, is the sixth photo</Text>
+              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
             </View>
 
           </View>
@@ -408,7 +406,7 @@ export default function App() {
         <View>
 
           {/* THIS IS AN EXAMPLE OF DEREFERNECING FROM A PARAMETER -- THE solar_system is OUR GLOBAL DICTIONARY*/}
-          <Text style={{ color: 'white' }}> You're in Planet {solar_system.id} </Text>
+          <Text style={{ color: 'white' }}> You're at {solar_system.title} </Text>
         </View>
 
 
@@ -462,7 +460,7 @@ export default function App() {
               >
                 <Image
                   style={styles.planet}
-                  source={SolarSystemData[found_index].img}>
+                  source={{ uri: SolarSystemData[found_index].img }}>
                 </Image>
               </Pressable>
             </View>
@@ -532,12 +530,16 @@ const styles = StyleSheet.create({
   },
 
   whatsHot_textbox: {
-    backgroundColor: 'purple',
-    height: '100%',
-    width: '100%',
-    fontSize: '50',
+    backgroundColor: '#d97b00',
+    height: 50,
+    width: 300,
+    fontSize: '20',
     color: 'white',
     textAlign: 'center',
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 10,
+    marginTop: 10,
   },
 
   scrollView: {
@@ -575,18 +577,19 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   sunScreen_rows: {
+    backgroundColor: '#FFD700',
     width: '100%',
     height: '33.34%',
     flexDirection: 'row',
-    alignContent: 'space-between',
+    justifyContent: 'center'
 
   },
   sunScreen_col: {
     width: '50%',
     height: '100%',
     flexDirection: 'column',
-    alignContent: 'space-between',
-
+    justifyContent: 'center',
+    alignItems: 'center'
 
   },
   planets_visual: {
@@ -605,13 +608,19 @@ const styles = StyleSheet.create({
 
   },
   whatsHot: {
+    backgroundColor: '#FFD700',
     width: '100%',
     height: '20%',
   },
 
   whatsHotHeader: {
+    backgroundColor: '#FFD700',
     width: '100%',
-    height: '10%',
+    height: '20%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   whatsHotHeaderText: {
     fontSize: '24',
@@ -619,7 +628,7 @@ const styles = StyleSheet.create({
 
   },
   photos: {
-    height: '70%',
+    height: '100%',
     width: '100%',
 
   },
