@@ -51,6 +51,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 1',
     whats_hot: '',
+    phone_number: '3141592653',
+    email: 'random@outlook.com',
+    socials: {
+      instagram: "@random",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -65,6 +70,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 2',
     whats_hot: '',
+    phone_number: '1357911131',
+    email: 'person@gmail.com',
+    socials: {
+      instagram: "@person",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -79,6 +89,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 3',
     whats_hot: '',
+    phone_number: '4823772592',
+    email: 'cs147@gmail.com',
+    socials: {
+      instagram: "@cs147",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -93,6 +108,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 4',
     whats_hot: '',
+    phone_number: '9093857273',
+    email: 'person@yahoo.com',
+    socials: {
+      instagram: "@person_yahoo",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -107,6 +127,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 5',
     whats_hot: '',
+    phone_number: '5371639422',
+    email: 'hello@website.com',
+    socials: {
+      instagram: "@hello",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -121,6 +146,11 @@ const SolarSystemData = [
     img: Image.resolveAssetSource(AddCommunity).uri,
     title: 'Planet 6',
     whats_hot: '',
+    phone_number: '8481991742',
+    email: 'tired@gmail.com',
+    socials: {
+      instagram: "@tired",
+    },
     polaroids: [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
@@ -561,6 +591,15 @@ to allow you to change what's shown -- make sure to populate this into a dict so
 persist*/}
 
           <View style={styles.whatsHotHeaderPlanetPage}>
+            <Text style={{ color: 'white' }}>
+              Phone number: {solar_system["phone_number"]}
+            </Text>
+            <Text style={{ color: 'white' }}>
+              Email: {solar_system["email"]}
+            </Text>
+            <Text style={{ color: 'white' }}>
+              Instagram: {solar_system["socials"]["instagram"]}
+            </Text>
             <Text style={styles.whatsHotHeaderTextPlanetPage}>
               Here's what's hot at {solar_system["title"]}:
             </Text>
