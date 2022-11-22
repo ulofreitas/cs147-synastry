@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Dimensions } from 'react-native';
 import UploadImage from "./UploadImage";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 
@@ -87,7 +87,6 @@ export default function App() {
 
   // two functions that update text / searched values --> This is used for the TextInput functionality  
   let [text, setText] = useState('');
-  let [searched, found_index, searchText] = useState({found_index: -1});
 
 
   // Function that renders each planet in the dictionary
@@ -96,7 +95,7 @@ export default function App() {
   const renderItem = (item, navigation) => {
 
     const img = item.img
-    console.log(img)
+    //console.log(img)
     return (
 
 
@@ -353,7 +352,7 @@ export default function App() {
 
 
     const solar_system = route.params["solarSystem"]
-    console.log(solar_system["id"])
+    //console.log(solar_system["id"])
 
     return (
       <SafeAreaView style={styles.container}>
@@ -372,14 +371,24 @@ export default function App() {
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
   const PlanetSearch = (navigation) => {
-    let searchText = (text) => {
-      for (let i = 0; i < SolarSystemData.length; i++) {
-        if (SolarSystemData[i].title.includes(text)) {
-          found_index = i;
+    let [searched, searchText] = useState('');
+    let found_index = -1;
+
+    useEffect(() => {
+      console.log("searching")
+      console.log(searched)
+      console.log(found_index)
+      if (searched.length != 0) {
+        for (let i = 0; i < SolarSystemData.length; i++) {
+          if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
+            found_index = i;
+            console.log("found " + i)
+            break;
+          }
         }
+        found_index = -1;
       }
-      found_index = -1;
-    }
+    }, [searched])
 
     return (
       <SafeAreaView style={styles.search_container}>
@@ -387,7 +396,7 @@ export default function App() {
           <TextInput
             style={styles.search_textbox}
             placeholder=" Tell us what you're looking for...   "
-            onChange={newText => searchText(newText)}
+            onChangeText={text => searchText(text)}
             value={searched}
           />
           {found_index != -1 &&
