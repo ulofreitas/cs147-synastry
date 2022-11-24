@@ -1,6 +1,6 @@
 import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput } from "react-native";
 import { Themes, Images } from "./assets/Themes";
-import { ImageBackground } from "react-native-web";
+import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
 import { warmUpAsync } from "expo-web-browser";
 import { Ionicons } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import { Dimensions } from 'react-native';
 import UploadImage from "./UploadImage";
 import React, { useState, useEffect } from 'react';
 import AddCommunity from '../synastry_final_project/assets/add_community.png';
-
+import Stars from '../synastry_final_project/assets/stars.png';
 
 
 
@@ -214,7 +214,6 @@ export default function App() {
       <View style={styles.planet_rows}>
         <Text style={styles.planet_names}> {item.title}</Text>
 
-
         <Pressable style={styles.button} onPress={() => {
           // navigates to planet screen when a planet is clicked, and passes the planet entry in the dictionary
 
@@ -229,7 +228,6 @@ export default function App() {
             // This is the image that shows up for each planet, so if img is changed for a planet, so will
             // its image
             source={{ uri: item.img }}>
-
           </Image>
 
         </Pressable>
@@ -249,86 +247,61 @@ export default function App() {
     return (
       // These are all the rendered planets, rendered using a flatlist
       <SafeAreaView style={styles.container}>
-        {isFocused &&
-          <View style={styles.planets_visual}>
-            <FlatList
-              data={SolarSystemData}
-              renderItem={({ item }) => renderItem(item, navigation)}
-              keyExtractor={item => item.id}
-              numColumns={3}
-            />
+        <ImageBackground style={styles.stars_background}
+          resizeMode='cover'
+          source={require('../synastry_final_project/assets/stars.png')}>
+          {isFocused &&
+            <View style={styles.planets_visual}>
+              <FlatList
+                data={SolarSystemData}
+                renderItem={({ item }) => renderItem(item, navigation)}
+                keyExtractor={item => item.id}
+                numColumns={3}
+                ItemSeparatorComponent={() => <View style={{height: 20}} />}
+              />
+            </View>
+          }
+
+          {/* These is the button used for searching for a planet */}
+          <View style={styles.navbuttons}>
+            <Pressable style={styles.explore_button} onPress={() => {
+              navigation.navigate('Search For a Planet');
+            }}
+            >
+              {/* This is the image used for searching for a planet */}
+              <Image
+                style={styles.button_image}
+                source={require('../synastry_final_project/assets/discover_communities.png')}>
+              </Image>
+            </Pressable>
+            <View style={{ width: '40%' }} />
+            {/* This is the button used for creating  a planet */}
+            <Pressable style={styles.add_button} onPress={() => {
+              navigation.navigate('Create a Planet');
+            }}
+            >
+              {/* This is the image used for creating  a planet */}
+              <Image
+                style={styles.button_image}
+                source={require('../synastry_final_project/assets/add_community.png')}>
+              </Image>
+            </Pressable>
           </View>
-        }
 
-
-        {/* These is the button used for searching for a planet */}
-
-        <View style={styles.navbuttons}>
-
-          <Pressable style={styles.explore_button} onPress={() => {
-            navigation.navigate('Search For a Planet');
-          }}
-          >
-
-            {/* This is the image used for searching for a planet */}
-            <Image
-              style={styles.button_image}
-
-              source={require('../synastry_final_project/assets/discover_communities.png')}>
-
-            </Image>
-
-
-
-
-          </Pressable>
-
-
-
-          {/* This is the button used for creating  a planet */}
-          <Pressable style={styles.add_button} onPress={() => {
-            navigation.navigate('Create a Planet');
-          }}
-          >
-            {/* This is the image used for creating  a planet */}
-            <Image
-              style={styles.button_image}
-
-              source={require('../synastry_final_project/assets/add_community.png')}>
-
-            </Image>
-
-
-
-
-          </Pressable>
-
-
-
-
-
-
-        </View>
-
-        {/* This is the sun button, it is a pressable*/}
-        <View style={styles.sun}>
-          <Pressable style={styles.button} onPress={() => {
-            navigation.navigate('Your Personal Space');
-          }}
-          >
-
-            {/* This is the image used for the sun*/}
-            <Image
-              style={styles.sun_image}
-
-              source={require('../synastry_final_project/assets/Sun.png')}>
-
-            </Image>
-          </Pressable>
-        </View>
-
-
-
+          {/* This is the sun button, it is a pressable*/}
+          <View style={styles.sun}>
+            <Pressable style={styles.button} onPress={() => {
+              navigation.navigate('Your Personal Space');
+            }}
+            >
+              {/* This is the image used for the sun*/}
+              <Image
+                style={styles.sun_image}
+                source={require('../synastry_final_project/assets/Sun.png')}>
+              </Image>
+            </Pressable>
+          </View>
+        </ImageBackground>
       </SafeAreaView>
 
     )
@@ -384,84 +357,88 @@ export default function App() {
     return (
 
       // The sun uses a scroll view so that you can scroll around
+      // <View>
+      //   <Text>
+      //     text
+      //   </Text>
+      // </View>
+      <SafeAreaView style={styles.sunPageBackground}>
+        <Pressable
+          style={styles.resurfaceButton}
+          onPress = {() => {
+            navigation.navigate('Your Solar System');
+          }}>
+            <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+        </Pressable>
+        <ScrollView style={styles.scrollView}>
+          {/* This section handles the what's hot area, the text is the label, and the TextInput is
+        to allow you to change what's shown -- make sure to populate this into a dict so changes
+        persist*/}
 
-      <ScrollView style={styles.scrollView}>
-
-
-
-        {/* This section handles the what's hot area, the text is the label, and the TextInput is
-      to allow you to change what's shown -- make sure to populate this into a dict so changes
-      persist*/}
-
-        <View style={styles.whatsHotHeader}>
-          <Text style={styles.whatsHotHeaderText}>
-            Tell us what's hot!
-          </Text>
-          {/*TODO POPULATE THIS INTO A DICTIONARY */}
-          <TextInput
-            style={styles.whatsHot_textbox}
-            placeholder={" I'm feeling...   "}
-            defaultValue={global_whats_hot}
-            onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
-            onEndEditing={() => setGlobalWhatsHot(whats_hot)}
-          //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-          />
-        </View>
-
-
-        {/* This section defines three rows, each with two columns for pictures for people to upload
-      
-      TODO:
-      
-      MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
-      SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
-
-        <View style={styles.photos}>
-          <View style={styles.sunScreen_rows}>
-
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
-
-            </View>
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader1} image={Polaroids[1].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
-            </View>
-
-
-          </View>
-          <View style={styles.sunScreen_rows}>
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader2} image={Polaroids[2].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
-
-            </View>
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader3} image={Polaroids[3].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
-            </View>
-
-
+          <View style={styles.whatsHotHeader}>
+            <Text style={styles.whatsHotHeaderText}>
+              Tell us what's hot!
+            </Text>
+            {/*TODO POPULATE THIS INTO A DICTIONARY */}
+            <TextInput
+              style={styles.whatsHot_textbox}
+              placeholder={" I'm feeling...   "}
+              defaultValue={global_whats_hot}
+              onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
+              onEndEditing={() => setGlobalWhatsHot(whats_hot)}
+            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+            />
           </View>
 
 
+          {/* This section defines three rows, each with two columns for pictures for people to upload
+        
+        TODO:
+        
+        MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
+        SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
-          <View style={styles.sunScreen_rows}>
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader4} image={Polaroids[4].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+          <View style={styles.photos}>
+            <View style={styles.sunScreen_rows}>
 
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader1} image={Polaroids[1].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
             </View>
-            <View style={styles.sunScreen_col}>
-              <UploadImage passImage={getImageFromUploader5} image={Polaroids[5].image} />
-              <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+
+            <View style={styles.sunScreen_rows}>
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader2} image={Polaroids[2].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
+
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader3} image={Polaroids[3].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
+            </View>
+
+            <View style={styles.sunScreen_rows}>
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader4} image={Polaroids[4].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
+
+              <View style={styles.sunScreen_col}>
+                <UploadImage passImage={getImageFromUploader5} image={Polaroids[5].image} />
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+              </View>
             </View>
 
           </View>
-        </View>
+        </ScrollView>
 
-      </ScrollView>
+      </SafeAreaView>
 
 
     )
@@ -519,7 +496,7 @@ export default function App() {
           <View style={{ height: '5%' }} />
           <UploadImage passImage={getImageFromUploader} />
           <Pressable style={styles.create_planet_button} onPress={createPlanet}>
-            <Text style={{ fontSize: 20 }}>Create!</Text>
+            <Text style={{ fontSize: 20 }}>Create Planet!</Text>
           </Pressable>
         </View>
 
@@ -702,9 +679,25 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       }
     }, [searched])
 
+    const Bold = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+
     return (
       <SafeAreaView style={styles.search_container}>
-        <View>
+        <View style={styles.search_top_third}>
+          <Pressable
+            style={styles.resurfaceButton}
+            onPress = {() => {
+              navigation.navigate('Your Solar System');
+            }}>
+              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+          </Pressable>
+          <View style={styles.search_for_planet_text}>
+            <Text style={styles.search_for_planet_text_content}>
+              Search for a planet to visit!
+            </Text>
+          </View>
+        </View>
+        <View style={styles.search_bottom_third}>
           <TextInput
             style={styles.search_textbox}
             placeholder=" Tell us what you're looking for...   "
@@ -712,9 +705,13 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
             value={searched}
           />
           {found_index != -1 &&
-            <View style={{ height: '50%' }}>
-              <Text style={styles.planet_names}> {SolarSystemData[found_index].title}</Text>
-              <Pressable style={styles.button} onPress={() => {
+            <View style={styles.planet_to_visit_preview}>
+              <View style={styles.planet_preview_text_box}>
+                <Text style={styles.planet_preview_text}>
+                  You may be interested: <Bold>{SolarSystemData[found_index].title}</Bold>
+                </Text>
+              </View>
+              <Pressable style={styles.planet_to_visit_button} onPress={() => {
                 navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
               }}
               >
@@ -738,9 +735,9 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       <Stack.Navigator>
         <Stack.Screen name="Your Solar System" component={HomePage} />
         <Stack.Screen name="Visiting a Planet" component={PlanetPage} />
-        <Stack.Screen name="Your Personal Space" component={SunPage} />
+        <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
         <Stack.Screen name="Create a Planet" component={PlanetCreation} />
-        <Stack.Screen name="Search For a Planet" component={PlanetSearch} />
+        <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
       </Stack.Navigator>
 
     </NavigationContainer>
@@ -759,10 +756,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  search_container: {
-    backgroundColor: 'navy',
-    justifyContent: "front",
-    alignItems: "center",
+  stars_background: {
     height: '100%',
     width: '100%',
   },
@@ -775,7 +769,33 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 20,
   },
-
+  // Search for/visit planet styling
+  search_container: {
+    backgroundColor: 'navy',
+    justifyContent: "front",
+    alignItems: "center",
+    height: '100%',
+    width: '100%',
+  },
+  search_top_third: {
+    height: '25%',
+    width: '100%',
+    flexDirection: 'column',
+  },
+  search_bottom_third: {
+    height: '65%',
+    width: '80%',
+    alignItems: 'center'
+  },
+  search_for_planet_text: {
+    height: '50%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  search_for_planet_text_content: {
+    fontSize: '24',
+    color: 'white',
+  },
   search_textbox: {
     backgroundColor: 'navy',
     marginTop: 20,
@@ -788,7 +808,26 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 10,
   },
-
+  planet_to_visit_preview: {
+    height: '50%',
+    backgroundColor: 'lightblue',
+    justifyContent: 'center',
+  },
+  planet_preview_text_box: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '20%',
+  },
+  planet_preview_text: {
+    fontSize: '18',
+    color: 'white',
+    textAlign: 'center',
+    backgroundColor: 'red',
+  },
+  planet_to_visit_button: {
+    height: '70%',
+    backgroundColor: 'gold',
+  },
   whatsHot_textbox: {
     backgroundColor: '#d97b00',
     height: 50,
@@ -815,6 +854,7 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
+    height: '100%'
   },
   scrollViewPlanetPage: {
   },
@@ -845,13 +885,16 @@ const styles = StyleSheet.create({
 
   planet_rows: {
     width: '33.3%',
-    height: "130%",
+    height: "100%",
     alignContent: 'space-between',
-    backgroundColor: 'navy',
     paddingTop: 10,
+    paddingBottom: 50,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   sunScreen_rows: {
-    backgroundColor: '#FFD700',
+    // backgroundColor: '#FFD700',
+    // backgroundColor: 'pink',
     width: '100%',
     height: '33.34%',
     flexDirection: 'row',
@@ -863,7 +906,8 @@ const styles = StyleSheet.create({
     height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    // backgroundColor: 'white',
 
   },
   planetPage_rows: {
@@ -885,7 +929,6 @@ const styles = StyleSheet.create({
   planets_visual: {
     width: '100%',
     height: '55%',
-    backgroundColor: 'navy',
   },
   button: {
     height: "100%",
@@ -897,14 +940,22 @@ const styles = StyleSheet.create({
 
 
   },
+  sunPageBackground: {
+    backgroundColor: Themes.synastry_styles.yellow_sun,
+
+  },
   whatsHot: {
-    backgroundColor: '#FFD700',
+    // backgroundColor: '#FFD700',
     width: '100%',
     height: '20%',
   },
 
+  resurfaceButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   whatsHotHeader: {
-    backgroundColor: '#FFD700',
+    // backgroundColor: '#FFD700',
     width: '100%',
     height: '20%',
     display: 'flex',
@@ -934,28 +985,24 @@ const styles = StyleSheet.create({
 
   },
   photos: {
-    height: '100%',
+    height: '90%',
     width: '100%',
 
   },
   navbuttons: {
-    height: '20%',
-    width: '25%',
-
+    height: '25%',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   explore_button: {
-    width: '75%',
-    height: '60%',
-    resizeMode: 'contain',
-    position: 'absolute', left: '-130%', bottom: '25%',
+    width: '25%',
   },
 
 
   add_button: {
-    width: '75%',
-    height: '60%',
-    resizeMode: 'contain',
-    position: 'absolute', left: '155%', bottom: '25%',
+    width: '25%',
   }
 
 });
