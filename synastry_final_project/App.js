@@ -12,7 +12,7 @@ import UploadImage from "./UploadImage";
 import React, { useState, useEffect } from 'react';
 import AddCommunity from '../synastry_final_project/assets/add_community.png';
 import Stars from '../synastry_final_project/assets/stars.png';
-
+import nullPlanet from '../synastry_final_project/assets/null_planet.png';
 
 
 
@@ -48,7 +48,7 @@ const SolarSystemData = [
   {
 
     id: '1',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 1',
     whats_hot: '',
     phone_number: '3141592653',
@@ -67,7 +67,7 @@ const SolarSystemData = [
   },
   {
     id: '2',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 2',
     whats_hot: '',
     phone_number: '1357911131',
@@ -86,7 +86,7 @@ const SolarSystemData = [
   },
   {
     id: '3',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 3',
     whats_hot: '',
     phone_number: '4823772592',
@@ -105,7 +105,7 @@ const SolarSystemData = [
   },
   {
     id: '4',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 4',
     whats_hot: '',
     phone_number: '9093857273',
@@ -124,7 +124,7 @@ const SolarSystemData = [
   },
   {
     id: '5',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 5',
     whats_hot: '',
     phone_number: '5371639422',
@@ -143,7 +143,7 @@ const SolarSystemData = [
   },
   {
     id: '6',
-    img: Image.resolveAssetSource(AddCommunity).uri,
+    img: Image.resolveAssetSource(nullPlanet).uri,
     title: 'Planet 6',
     whats_hot: '',
     phone_number: '8481991742',
