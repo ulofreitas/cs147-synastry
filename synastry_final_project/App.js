@@ -13,7 +13,8 @@ import React, { useState, useEffect } from 'react';
 import AddCommunity from '../synastry_final_project/assets/add_community.png';
 import Stars from '../synastry_final_project/assets/stars.png';
 import nullPlanet from '../synastry_final_project/assets/null_planet.png';
-
+import createPlanet from '../synastry_final_project/assets/create_planet_white.png';
+import discoverPlanet from '../synastry_final_project/assets/discover_planet.png';
 
 
 
@@ -250,6 +251,11 @@ export default function App() {
         <ImageBackground style={styles.stars_background}
           resizeMode='cover'
           source={require('../synastry_final_project/assets/stars.png')}>
+          <View style={styles.solar_system_header}>
+            <Text style={styles.my_solar_system_text}>
+              My Solar System
+            </Text>
+          </View>
           {isFocused &&
             <View style={styles.planets_visual}>
               <FlatList
@@ -271,7 +277,7 @@ export default function App() {
               {/* This is the image used for searching for a planet */}
               <Image
                 style={styles.button_image}
-                source={require('../synastry_final_project/assets/discover_communities.png')}>
+                source={require('../synastry_final_project/assets/discover_planet.png')}>
               </Image>
             </Pressable>
             <View style={{ width: '40%' }} />
@@ -283,7 +289,7 @@ export default function App() {
               {/* This is the image used for creating  a planet */}
               <Image
                 style={styles.button_image}
-                source={require('../synastry_final_project/assets/add_community.png')}>
+                source={require('../synastry_final_project/assets/create_planet_white.png')}>
               </Image>
             </Pressable>
           </View>
@@ -480,25 +486,45 @@ export default function App() {
 
     return (
       <SafeAreaView style={styles.search_container}>
-        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-          <TextInput
-            style={styles.search_textbox}
-            placeholder=" Planet to replace...   "
-            onChangeText={text => setReplace(text)}
-            value={replace}
-          />
-          <TextInput
-            style={styles.search_textbox}
-            placeholder=" Name your planet...   "
-            onChangeText={text => setName(text)}
-            value={name}
-          />
-          <View style={{ height: '5%' }} />
-          <UploadImage passImage={getImageFromUploader} />
-          <Pressable style={styles.create_planet_button} onPress={createPlanet}>
-            <Text style={{ fontSize: 20 }}>Create Planet!</Text>
+        <ImageBackground style={styles.stars_background}
+          resizeMode='cover'
+          source={require('../synastry_final_project/assets/stars.png')}>
+          <Pressable
+            style={styles.resurfaceButton}
+            onPress = {() => {
+              navigation.navigate('Your Solar System');
+            }}>
+              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
           </Pressable>
-        </View>
+          <View style={styles.create_planet_header}>
+            <Text style={styles.create_planet_text}>
+              Create your own planet!
+            </Text>
+          </View>
+          <View style={styles.add_planet_box}>
+            <TextInput
+              style={styles.search_textbox}
+              placeholder=" Planet to replace...   "
+              onChangeText={text => setReplace(text)}
+              value={replace}
+            />
+            <TextInput
+              style={styles.search_textbox}
+              placeholder=" Name your new planet...   "
+              onChangeText={text => setName(text)}
+              value={name}
+            />
+            <View style={{ height: '5%' }} />
+            <Text style={styles.upload_planet_photo}>
+              Upload a cover photo for your planet:
+            </Text>
+            <View style={{ height: '3%' }} />
+            <UploadImage passImage={getImageFromUploader} />
+            <Pressable style={styles.create_planet_button} onPress={createPlanet}>
+              <Text style={{ fontSize: 20 }}>Create Planet!</Text>
+            </Pressable>
+          </View>
+        </ImageBackground>
 
       </SafeAreaView>
     )
@@ -683,46 +709,57 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
     return (
       <SafeAreaView style={styles.search_container}>
-        <View style={styles.search_top_third}>
-          <Pressable
-            style={styles.resurfaceButton}
-            onPress = {() => {
-              navigation.navigate('Your Solar System');
-            }}>
-              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
-          </Pressable>
-          <View style={styles.search_for_planet_text}>
-            <Text style={styles.search_for_planet_text_content}>
-              Search for a planet to visit!
+        <ImageBackground style={styles.stars_background}
+          resizeMode='cover'
+          source={require('../synastry_final_project/assets/stars.png')}>
+
+          <View style={styles.search_top_third}>
+            <Pressable
+              style={styles.resurfaceButton}
+              onPress = {() => {
+                navigation.navigate('Your Solar System');
+              }}>
+                <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+            </Pressable>
+            <View style={styles.search_for_planet_text}>
+              <Text style={styles.search_for_planet_text_content}>
+                Search for a planet to visit!
+              </Text>
+            </View>
+          </View>
+          <View style={styles.search_bottom_third}>
+            <TextInput
+              style={styles.search_textbox}
+              placeholder=" Tell us what you're looking for...   "
+              onChangeText={text => searchText(text)}
+              value={searched}
+            />
+            <View style={{ height: '5%' }} />
+            {found_index != -1 &&    
+              <View style={styles.planet_to_visit_preview}>
+                <View style={styles.planet_preview_text_box}>
+                  <Text style={styles.planet_preview_text}>
+                    You may be interested: <Bold>{SolarSystemData[found_index].title}</Bold>
+                  </Text>
+                </View>
+                <Pressable style={styles.planet_to_visit_button} onPress={() => {
+                  navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
+                }}
+                >
+                  <Image
+                    style={styles.planet}
+                    source={{ uri: SolarSystemData[found_index].img }}>
+                  </Image>
+                </Pressable>
+              </View>
+            }
+          </View>
+          <View style={styles.search_tip}>
+            <Text style={styles.search_tip_text}>
+              <Bold>Tip:</Bold> It's helpful to search for concepts/names you may be interested in!<Bold></Bold>
             </Text>
           </View>
-        </View>
-        <View style={styles.search_bottom_third}>
-          <TextInput
-            style={styles.search_textbox}
-            placeholder=" Tell us what you're looking for...   "
-            onChangeText={text => searchText(text)}
-            value={searched}
-          />
-          {found_index != -1 &&
-            <View style={styles.planet_to_visit_preview}>
-              <View style={styles.planet_preview_text_box}>
-                <Text style={styles.planet_preview_text}>
-                  You may be interested: <Bold>{SolarSystemData[found_index].title}</Bold>
-                </Text>
-              </View>
-              <Pressable style={styles.planet_to_visit_button} onPress={() => {
-                navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
-              }}
-              >
-                <Image
-                  style={styles.planet}
-                  source={{ uri: SolarSystemData[found_index].img }}>
-                </Image>
-              </Pressable>
-            </View>
-          }
-        </View>
+        </ImageBackground>
 
       </SafeAreaView>
     )
@@ -733,19 +770,15 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Your Solar System" component={HomePage} />
+        <Stack.Screen name="Your Solar System" component={HomePage} options={{headerShown: false}} />
         <Stack.Screen name="Visiting a Planet" component={PlanetPage} />
         <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
-        <Stack.Screen name="Create a Planet" component={PlanetCreation} />
+        <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
         <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
       </Stack.Navigator>
-
     </NavigationContainer>
 
   );
-
-
-
 }
 
 const styles = StyleSheet.create({
@@ -759,6 +792,7 @@ const styles = StyleSheet.create({
   stars_background: {
     height: '100%',
     width: '100%',
+    alignItems: "center",
   },
   create_planet_button: {
     backgroundColor: 'white',
@@ -777,15 +811,31 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  create_planet_header: {
+    height: '10%',
+    justifyContent: 'center',
+  },
+  create_planet_text: {
+    fontSize: '24',
+    color: 'white',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 5,
+  },
+  add_planet_box: {
+    height: '80%',
+    flexDirection: 'column', 
+    alignItems: 'center',
+  },
   search_top_third: {
     height: '25%',
     width: '100%',
     flexDirection: 'column',
   },
   search_bottom_third: {
-    height: '65%',
+    height: '55%',
     width: '80%',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   search_for_planet_text: {
     height: '50%',
@@ -795,6 +845,9 @@ const styles = StyleSheet.create({
   search_for_planet_text_content: {
     fontSize: '24',
     color: 'white',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 5,
   },
   search_textbox: {
     backgroundColor: 'navy',
@@ -808,9 +861,16 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 10,
   },
+  upload_planet_photo: {
+    fontSize: '20',
+    color: 'white',
+    textAlign: 'center',
+  },
   planet_to_visit_preview: {
-    height: '50%',
-    backgroundColor: 'lightblue',
+    height: '70%',
+    width: '80%',
+    backgroundColor: '#00009b',
+    borderRadius: 10,
     justifyContent: 'center',
   },
   planet_preview_text_box: {
@@ -822,11 +882,21 @@ const styles = StyleSheet.create({
     fontSize: '18',
     color: 'white',
     textAlign: 'center',
-    backgroundColor: 'red',
   },
   planet_to_visit_button: {
     height: '70%',
-    backgroundColor: 'gold',
+  },
+  search_tip: {
+    height: '10%',
+    width: '80%',
+    backgroundColor: '#faaea0',
+    borderRadius: 10,
+    justifyContent: 'center'
+  },
+  search_tip_text: {
+    color: 'white',
+    fontSize: '16',
+    textAlign: 'center',
   },
   whatsHot_textbox: {
     backgroundColor: '#d97b00',
@@ -870,7 +940,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
-
+    shadowOffset: {
+      width: Themes.synastry_styles.shadows.shadowOffset.width,
+      width: Themes.synastry_styles.shadows.shadowOffset.height,
+    },
+    shadowColor: Themes.synastry_styles.shadows.shadowColor,
+    shadowOpacity: Themes.synastry_styles.shadows.shadowOpacity,
+    shadowRadius: Themes.synastry_styles.shadows.shadowRadius,
+    elevation: 24,
   },
   sun_image: {
     width: '100%',
@@ -926,23 +1003,45 @@ const styles = StyleSheet.create({
     alignItems: 'center'
 
   },
+  solar_system_header: {
+    height: '8%',
+    justifyContent: 'center',
+  },
+  my_solar_system_text: {
+    color: Themes.synastry_styles.white,
+    fontSize: '24',
+    textAlign: 'center',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 5,
+  },
   planets_visual: {
     width: '100%',
-    height: '55%',
+    height: '50%',
+  },
+  navbuttons: {
+    height: '22%',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  explore_button: {
+    width: '25%',
+  },
+  add_button: {
+    width: '25%',
   },
   button: {
     height: "100%",
     width: "100%",
   },
   sun: {
-    height: '25%',
+    height: '20%',
     width: '100%',
-
-
   },
   sunPageBackground: {
     backgroundColor: Themes.synastry_styles.yellow_sun,
-
   },
   whatsHot: {
     // backgroundColor: '#FFD700',
@@ -953,6 +1052,13 @@ const styles = StyleSheet.create({
   resurfaceButton: {
     justifyContent: 'center',
     alignItems: 'center',
+    shadowOffset: {
+      width: Themes.synastry_styles.shadows.shadowOffset.width,
+      width: Themes.synastry_styles.shadows.shadowOffset.height,
+    },
+    shadowColor: Themes.synastry_styles.shadows.shadowColor,
+    shadowOpacity: Themes.synastry_styles.shadows.shadowOpacity,
+    shadowRadius: Themes.synastry_styles.shadows.shadowRadius,
   },
   whatsHotHeader: {
     // backgroundColor: '#FFD700',
@@ -966,7 +1072,6 @@ const styles = StyleSheet.create({
   whatsHotHeaderText: {
     fontSize: '24',
     textAlign: 'center',
-
   },
 
   whatsHotHeaderPlanetPage: {
@@ -989,20 +1094,4 @@ const styles = StyleSheet.create({
     width: '100%',
 
   },
-  navbuttons: {
-    height: '25%',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  explore_button: {
-    width: '25%',
-  },
-
-
-  add_button: {
-    width: '25%',
-  }
-
 });
