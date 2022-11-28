@@ -30,10 +30,12 @@ export default function UploadImage(props) {
     return (
         <View style={imageUploaderStyles.container}>
         {
-            props.image && !image && <Image source={{ uri: props.image }} style={{ width: 200, height: 200 }} />
+            // props.image && !image && <Image source={{ uri: props.image }} style={{ width: 200, height: 200 }} />
+            props.image && !image && <Image source={{ uri: props.image }} style={{ width: '100%', height: '100%' }} />
         }
         {
-            !props.image && image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            // !props.image && image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            !props.image && image && <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
         }
             <View style={imageUploaderStyles.uploadBtnContainer}>
                 <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn} >
