@@ -1,4 +1,4 @@
-import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput } from "react-native";
+import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
@@ -191,14 +191,18 @@ const Polaroids = [
   },
 ]
 
-
-
 export default function App() {
 
 
   // two functions that update text / searched values --> This is used for the TextInput functionality  
   let [text, setText] = useState('');
   let [global_whats_hot, setGlobalWhatsHot] = useState('');
+  let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
+  let [global_caption_1, setGlobalPolaroid1Caption] = useState('');
+  let [global_caption_2, setGlobalPolaroid2Caption] = useState('');
+  let [global_caption_3, setGlobalPolaroid3Caption] = useState('');
+  let [global_caption_4, setGlobalPolaroid4Caption] = useState('');
+  let [global_caption_5, setGlobalPolaroid5Caption] = useState('');
 
 
   // Function that renders each planet in the dictionary
@@ -209,37 +213,27 @@ export default function App() {
     const img = item.img
     //console.log(img)
     return (
-
-
       // Creates rows of three planets, each planet is a pressable
       <View style={styles.planet_rows}>
-        <Text style={styles.planet_names}> {item.title}</Text>
+        <Text numberOfLines={1} style={styles.planet_names}>
+          {item.title}
+        </Text>
 
         <Pressable style={styles.button} onPress={() => {
           // navigates to planet screen when a planet is clicked, and passes the planet entry in the dictionary
-
           // i.e if planet 6 is clicked, all dict planet 6 values are passed
           navigation.navigate('Visiting a Planet', { solarSystem: item });
-
-        }}
-        >
-
+        }}>
           <Image
             style={styles.planet}
             // This is the image that shows up for each planet, so if img is changed for a planet, so will
             // its image
             source={{ uri: item.img }}>
           </Image>
-
         </Pressable>
-
-
       </View>
     )
-
   };
-
-
 
   // This is the main solar system page
   function HomePage({ navigation }) {
@@ -263,7 +257,7 @@ export default function App() {
                 renderItem={({ item }) => renderItem(item, navigation)}
                 keyExtractor={item => item.id}
                 numColumns={3}
-                ItemSeparatorComponent={() => <View style={{height: 20}} />}
+                ItemSeparatorComponent={() => <View style={{height: 15}} />}
               />
             </View>
           }
@@ -296,7 +290,7 @@ export default function App() {
 
           {/* This is the sun button, it is a pressable*/}
           <View style={styles.sun}>
-            <Pressable style={styles.button} onPress={() => {
+            <Pressable style={styles.sun_button} onPress={() => {
               navigation.navigate('Your Personal Space');
             }}
             >
@@ -316,7 +310,13 @@ export default function App() {
   function SunPage({ navigation }) {
     let [whats_hot, setWhatsHot] = useState('');
     let [count, setCount] = useState(0);
-
+    let [caption_0, setPolaroid0Caption] = useState('');
+    let [caption_1, setPolaroid1Caption] = useState('');
+    let [caption_2, setPolaroid2Caption] = useState('');
+    let [caption_3, setPolaroid3Caption] = useState('');
+    let [caption_4, setPolaroid4Caption] = useState('');
+    let [caption_5, setPolaroid5Caption] = useState('');
+    
     // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
     // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
     const getImageFromUploader0 = (image_data) => {
@@ -361,13 +361,7 @@ export default function App() {
     // TODO:
     // Populate info in your dictionary in order to make sure changes persist
     return (
-
-      // The sun uses a scroll view so that you can scroll around
-      // <View>
-      //   <Text>
-      //     text
-      //   </Text>
-      // </View>
+      
       <SafeAreaView style={styles.sunPageBackground}>
         <Pressable
           style={styles.resurfaceButton}
@@ -376,68 +370,142 @@ export default function App() {
           }}>
             <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
         </Pressable>
-        <ScrollView style={styles.scrollView}>
-          {/* This section handles the what's hot area, the text is the label, and the TextInput is
-        to allow you to change what's shown -- make sure to populate this into a dict so changes
-        persist*/}
+        {/* This section handles the what's hot area, the text is the label, and the TextInput is
+      to allow you to change what's shown -- make sure to populate this into a dict so changes
+      persist*/}
 
-          <View style={styles.whatsHotHeader}>
-            <Text style={styles.whatsHotHeaderText}>
-              Tell us what's hot!
-            </Text>
-            {/*TODO POPULATE THIS INTO A DICTIONARY */}
-            <TextInput
-              style={styles.whatsHot_textbox}
-              placeholder={" I'm feeling...   "}
-              defaultValue={global_whats_hot}
-              onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
-              onEndEditing={() => setGlobalWhatsHot(whats_hot)}
+        <View style={styles.whatsHotHeader}>
+          <Text style={styles.whatsHotHeaderText}>
+            What's hot?
+          </Text>
+          {/*TODO POPULATE THIS INTO A DICTIONARY */}
+          <TextInput
+            style={styles.whatsHot_textbox}
+            placeholder={" I'm feeling...   "}
+            defaultValue={global_whats_hot}
+            onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
+            onEndEditing={() => setGlobalWhatsHot(whats_hot)}
             //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
             />
-          </View>
+        </View>
 
-
-          {/* This section defines three rows, each with two columns for pictures for people to upload
-        
-        TODO:
-        
-        MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
-        SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
-
+        <ScrollView style={styles.scrollView}>
           <View style={styles.photos}>
             <View style={styles.sunScreen_rows}>
+              <View style={styles.sunScreen_col}>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_0}
+                    onChangeText={newText => setPolaroid0Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid0Caption(caption_0)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
+              </View>
 
               <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader0} image={Polaroids[0].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
-              </View>
-              <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader1} image={Polaroids[1].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader1} image={Polaroids[1].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_1}
+                    onChangeText={newText => setPolaroid1Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid1Caption(caption_1)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
               </View>
             </View>
 
+            <View style={{ height: 15 }} />
+
             <View style={styles.sunScreen_rows}>
               <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader2} image={Polaroids[2].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader2} image={Polaroids[2].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_2}
+                    onChangeText={newText => setPolaroid2Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid2Caption(caption_2)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
               </View>
 
               <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader3} image={Polaroids[3].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader3} image={Polaroids[3].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_3}
+                    onChangeText={newText => setPolaroid3Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid3Caption(caption_3)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
               </View>
             </View>
 
+            <View style={{ height: 15 }} />
+            
             <View style={styles.sunScreen_rows}>
               <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader4} image={Polaroids[4].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader4} image={Polaroids[4].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_4}
+                    onChangeText={newText => setPolaroid4Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid4Caption(caption_4)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
               </View>
 
               <View style={styles.sunScreen_col}>
-                <UploadImage passImage={getImageFromUploader5} image={Polaroids[5].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center' }}>Image caption</Text>
+                <View style={styles.polaroid_photo}>
+                  <UploadImage passImage={getImageFromUploader5} image={Polaroids[5].image} />
+                </View>
+                <View style={styles.polaroid_text_box}>
+                  <TextInput
+                    style={styles.polaroid_text_input}
+                    placeholder=" Write your caption here..."
+                    placeholderTextColor = 'black'
+                    defaultValue={global_caption_5}
+                    onChangeText={newText => setPolaroid5Caption(newText)}
+                    onEndEditing={() => setGlobalPolaroid5Caption(caption_5)}
+                    multiline
+                    maxLength={40}
+                  />
+                </View>
               </View>
             </View>
 
@@ -445,8 +513,6 @@ export default function App() {
         </ScrollView>
 
       </SafeAreaView>
-
-
     )
   }
 
@@ -722,18 +788,20 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                 <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
             </Pressable>
             <View style={styles.search_for_planet_text}>
-              <Text style={styles.search_for_planet_text_content}>
-                Search for a planet to visit!
-              </Text>
+                <Text style={styles.search_for_planet_text_content}>
+                  Search for a planet to visit!
+                </Text>
             </View>
           </View>
           <View style={styles.search_bottom_third}>
-            <TextInput
-              style={styles.search_textbox}
-              placeholder=" Tell us what you're looking for...   "
-              onChangeText={text => searchText(text)}
-              value={searched}
-            />
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+              <TextInput
+                style={styles.search_textbox}
+                placeholder=" Tell us what you're looking for...   "
+                onChangeText={text => searchText(text)}
+                value={searched}
+                />
+            </TouchableWithoutFeedback>
             <View style={{ height: '5%' }} />
             {found_index != -1 &&    
               <View style={styles.planet_to_visit_preview}>
@@ -746,10 +814,12 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                   navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
                 }}
                 >
-                  <Image
-                    style={styles.planet}
-                    source={{ uri: SolarSystemData[found_index].img }}>
-                  </Image>
+                  <View style={styles.planet_preview}>
+                    <Image
+                      style={styles.planet_preview}
+                      source={{ uri: SolarSystemData[found_index].img }}>
+                    </Image>
+                  </View>
                 </Pressable>
               </View>
             }
@@ -828,7 +898,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   search_top_third: {
-    height: '25%',
+    height: '10%',
     width: '100%',
     flexDirection: 'column',
   },
@@ -924,16 +994,22 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-    height: '100%'
+    height: '85%'
   },
   scrollViewPlanetPage: {
   },
   planet: {
-    borderRadius: '100%',
+    borderRadius: 99999,
+    width: 114,
+    height: 114,
+  },
+  planet_preview: {
+    borderRadius: 99999,
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
-
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   button_image: {
     borderRadius: 99999,
@@ -956,36 +1032,54 @@ const styles = StyleSheet.create({
   },
   planet_names: {
     width: '100%',
+    height: '10%',
     textAlign: 'center',
     color: 'white',
   },
 
   planet_rows: {
     width: '33.3%',
-    height: "100%",
-    alignContent: 'space-between',
-    paddingTop: 10,
-    paddingBottom: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
+    height: 180,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 5,
   },
   sunScreen_rows: {
-    // backgroundColor: '#FFD700',
-    // backgroundColor: 'pink',
     width: '100%',
-    height: '33.34%',
+    // height: '33%',
+    height: 220,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly'
 
   },
   sunScreen_col: {
-    width: '50%',
+    width: '45%',
     height: '100%',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'white',
+    backgroundColor: 'white',
 
+  },
+  polaroid_photo: {
+    backgroundColor: 'black',
+    width: '90%',
+    height: '70%',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  polaroid_text_box: {
+    width: '90%',
+    height: '20%',
+    justifyContent: 'center',
+  },
+  polaroid_text_input: {
+    fontSize: 14,
+    textAlign: 'center',
+    flex: 1,
+    flexShrink: 1,
+    color: 'black',
+    width: '100%',
+    height: '100%',
   },
   planetPage_rows: {
     backgroundColor: 'navy',
@@ -1033,6 +1127,12 @@ const styles = StyleSheet.create({
     width: '25%',
   },
   button: {
+    height: "90%",
+    width: "100%",
+    justifyContent: 'center',
+    alignContent: 'center'
+  },
+  sun_button: {
     height: "100%",
     width: "100%",
   },
@@ -1063,7 +1163,7 @@ const styles = StyleSheet.create({
   whatsHotHeader: {
     // backgroundColor: '#FFD700',
     width: '100%',
-    height: '20%',
+    height: '15%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -1090,8 +1190,8 @@ const styles = StyleSheet.create({
 
   },
   photos: {
-    height: '90%',
+    height: '100%',
     width: '100%',
-
+    justifyContent: 'space-between',
   },
 });
