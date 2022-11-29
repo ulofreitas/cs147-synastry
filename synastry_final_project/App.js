@@ -1,4 +1,4 @@
-import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
@@ -15,6 +15,7 @@ import Stars from '../synastry_final_project/assets/stars.png';
 import nullPlanet from '../synastry_final_project/assets/null_planet.png';
 import createPlanet from '../synastry_final_project/assets/create_planet_white.png';
 import discoverPlanet from '../synastry_final_project/assets/discover_planet.png';
+import Modal from "react-native-modal";
 
 
 
@@ -382,6 +383,7 @@ export default function App() {
           <TextInput
             style={styles.whatsHot_textbox}
             placeholder={" I'm feeling...   "}
+            placeholderTextColor="#949494" 
             defaultValue={global_whats_hot}
             onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
             onEndEditing={() => setGlobalWhatsHot(whats_hot)}
@@ -649,6 +651,12 @@ export default function App() {
       console.log(image_data);
     }
 
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollViewPlanetPage}>
@@ -660,22 +668,36 @@ to allow you to change what's shown -- make sure to populate this into a dict so
 persist*/}
 
           <View style={styles.whatsHotHeaderPlanetPage}>
-            <Text style={{ color: 'white' }}>
-              Phone number: {solar_system["phone_number"]}
-            </Text>
-            <Text style={{ color: 'white' }}>
-              Email: {solar_system["email"]}
-            </Text>
-            <Text style={{ color: 'white' }}>
-              Instagram: {solar_system["socials"]["instagram"]}
-            </Text>
+            <Button title="GROUP CONTACT" onPress={toggleModal} />
+            
+              <Modal isVisible={isModalVisible}>
+                <View style={styles.ModalBox}>
+                  <Text style={styles.ModalText}>Group Members</Text>
+                  <Text style={{color:"gray"}}>
+                  Phone Number: {solar_system["phone_number"]}
+                  </Text>
+                  <Text style={{color:"gray"}}>
+                    Email: {solar_system["email"]}
+                  </Text>
+                  <Text style={{color:"gray"}}>
+                    Instagram: {solar_system["socials"]["instagram"]}
+                  </Text>
+                  <Pressable style={styles.ModalButtonBox} onPress={toggleModal}>
+                    <Text style={styles.ModalButtonText}>Close</Text>
+                  </Pressable>
+              </View>
+            </Modal>
+
             <Text style={styles.whatsHotHeaderTextPlanetPage}>
-              Here's what's hot at {solar_system["title"]}:
+              Here's What's Hot at {solar_system["title"]}:
             </Text>
+
+
             {/*TODO POPULATE THIS INTO A DICTIONARY */}
             <TextInput
               style={styles.whatsHot_textboxPlanetPage}
               placeholder={" We're feeling...   "}
+              placeholderTextColor={"#b0b3b8"}
               defaultValue={solar_system["whats_hot"]}
               onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
               onEndEditing={() => setPlanetWhatsHot(solar_system["id"])}
@@ -694,14 +716,16 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
           <View style={styles.photosPlanetPage}>
             <View style={styles.planetPage_rows}>
 
-              <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader0} image={solar_system["polaroids"][0].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+
+                <View style={styles.planetPage_col}>
+                  <UploadImage passImage={getImageFromUploader0} image={solar_system["polaroids"][0].image} />
+                  <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>      </Text>
+
 
               </View>
               <View style={styles.planetPage_col}>
                 <UploadImage passImage={getImageFromUploader1} image={solar_system["polaroids"][1].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>         </Text>
               </View>
 
 
@@ -709,12 +733,12 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
             <View style={styles.planetPage_rows}>
               <View style={styles.planetPage_col}>
                 <UploadImage passImage={getImageFromUploader2} image={solar_system["polaroids"][2].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>        </Text>
 
               </View>
               <View style={styles.planetPage_col}>
                 <UploadImage passImage={getImageFromUploader3} image={solar_system["polaroids"][3].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>       </Text>
               </View>
 
 
@@ -722,15 +746,16 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
 
 
+
             <View style={styles.planetPage_rows}>
               <View style={styles.planetPage_col}>
                 <UploadImage passImage={getImageFromUploader4} image={solar_system["polaroids"][4].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>       </Text>
 
               </View>
               <View style={styles.planetPage_col}>
                 <UploadImage passImage={getImageFromUploader5} image={solar_system["polaroids"][5].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>Image caption</Text>
+                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>      </Text>
               </View>
 
             </View>
@@ -969,26 +994,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   whatsHot_textbox: {
-    backgroundColor: '#d97b00',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
     height: 50,
     width: 300,
     fontSize: '20',
     color: 'white',
     textAlign: 'center',
-    borderWidth: 2,
-    borderColor: 'black',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.05)',
     borderRadius: 10,
     marginTop: 10,
   },
   whatsHot_textboxPlanetPage: {
-    backgroundColor: 'navy',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     height: 50,
     width: 300,
     fontSize: '20',
-    color: 'white',
     textAlign: 'center',
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 10,
     marginTop: 10,
   },
@@ -1174,6 +1198,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  ModalBox: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 22,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  ModalText: {
+    fontSize: 20,
+    marginBottom: 12,
+  },
+  ModalParaText: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+
   whatsHotHeaderPlanetPage: {
     backgroundColor: 'navy',
     width: '100%',
@@ -1182,6 +1223,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  ModalButtonBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'navy',
+    marginTop: 20
+  },
+  ModalButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+    color: 'white',
   },
   whatsHotHeaderTextPlanetPage: {
     fontSize: '24',
