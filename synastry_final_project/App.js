@@ -64,6 +64,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "diabetes",
     ]
   },
   {
@@ -83,6 +86,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "pcos",
     ]
   },
   {
@@ -102,6 +108,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "culture",
     ]
   },
   {
@@ -121,6 +130,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "food",
     ]
   },
   {
@@ -140,6 +152,8 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
     ]
   },
   {
@@ -159,6 +173,8 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
     ]
   },
 
@@ -197,6 +213,7 @@ export default function App() {
   // two functions that update text / searched values --> This is used for the TextInput functionality  
   let [text, setText] = useState('');
   let [global_whats_hot, setGlobalWhatsHot] = useState('');
+  let [global_tags, setGlobalTags] = useState('');
   let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
   let [global_caption_1, setGlobalPolaroid1Caption] = useState('');
   let [global_caption_2, setGlobalPolaroid2Caption] = useState('');
@@ -309,6 +326,7 @@ export default function App() {
 
   function SunPage({ navigation }) {
     let [whats_hot, setWhatsHot] = useState('');
+    let [tags, setTags] = useState('');
     let [count, setCount] = useState(0);
     let [caption_0, setPolaroid0Caption] = useState('');
     let [caption_1, setPolaroid1Caption] = useState('');
@@ -385,6 +403,21 @@ export default function App() {
             defaultValue={global_whats_hot}
             onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
             onEndEditing={() => setGlobalWhatsHot(whats_hot)}
+            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+            />
+        </View>
+
+        <View style={styles.whatsHotHeader}>
+          <Text style={styles.whatsHotHeaderText}>
+            My tags
+          </Text>
+          {/*TODO POPULATE THIS INTO A DICTIONARY */}
+          <TextInput
+            style={styles.whatsHot_textbox}
+            placeholder={" Words to describe my journey...   "}
+            defaultValue={global_tags}
+            onChangeText={newText => setTags(newText)}    // uses the setText function and returns text, the updates input
+            onEndEditing={() => setGlobalTags(tags)}
             //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
             />
         </View>
@@ -601,11 +634,20 @@ export default function App() {
   // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
     let [whats_hot, setWhatsHot] = useState('');
+    let [tags, setTags] = useState('');
 
     const setPlanetWhatsHot = (id) => {
       for (let i = 0; i < SolarSystemData.length; i++) {
         if (SolarSystemData[i].id == id) {
           SolarSystemData[i].whats_hot = whats_hot;
+        }
+      }
+    }
+
+    const setPlanetTags = (id) => {
+      for (let i = 0; i < SolarSystemData.length; i++) {
+        if (SolarSystemData[i].id == id) {
+          SolarSystemData[i].tags[0] = tags;
         }
       }
     }
@@ -679,6 +721,18 @@ persist*/}
               defaultValue={solar_system["whats_hot"]}
               onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
               onEndEditing={() => setPlanetWhatsHot(solar_system["id"])}
+            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+            />
+            <Text style={styles.whatsHotHeaderTextPlanetPage}>
+              Tags for {solar_system["title"]}:
+            </Text>
+            {/*TODO POPULATE THIS INTO A DICTIONARY */}
+            <TextInput
+              style={styles.whatsHot_textboxPlanetPage}
+              placeholder={" We're described by...   "}
+              defaultValue={solar_system["tags"][0]}
+              onChangeText={newText => setTags(newText)}    // uses the setText function and returns text, the updates input
+              onEndEditing={() => setPlanetTags(solar_system["id"])}
             //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
             />
           </View>
@@ -757,7 +811,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       if (searched.length != 0) {
         let i = 0;
         for (i = 0; i < SolarSystemData.length; i++) {
-          if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
+          if (SolarSystemData[i].tags.includes(searched.toLowerCase())) {
             setFoundIndex(i);
             console.log("found " + i)
             break;
@@ -1177,7 +1231,7 @@ const styles = StyleSheet.create({
   whatsHotHeaderPlanetPage: {
     backgroundColor: 'navy',
     width: '100%',
-    height: '20%',
+    height: '30%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
