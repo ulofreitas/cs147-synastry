@@ -64,6 +64,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "diabetes",
     ]
   },
   {
@@ -83,6 +86,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "pcos",
     ]
   },
   {
@@ -102,6 +108,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "culture",
     ]
   },
   {
@@ -121,6 +130,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "food",
     ]
   },
   {
@@ -140,6 +152,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+
     ]
   },
   {
@@ -159,6 +174,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+
     ]
   },
 
@@ -197,6 +215,7 @@ export default function App() {
   // two functions that update text / searched values --> This is used for the TextInput functionality  
   let [text, setText] = useState('');
   let [global_whats_hot, setGlobalWhatsHot] = useState('');
+  let [global_tags, setGlobalTags] = useState('');
   let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
   let [global_caption_1, setGlobalPolaroid1Caption] = useState('');
   let [global_caption_2, setGlobalPolaroid2Caption] = useState('');
@@ -257,7 +276,7 @@ export default function App() {
                 renderItem={({ item }) => renderItem(item, navigation)}
                 keyExtractor={item => item.id}
                 numColumns={3}
-                ItemSeparatorComponent={() => <View style={{height: 15}} />}
+                ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
               />
             </View>
           }
@@ -274,9 +293,9 @@ export default function App() {
                 source={require('../synastry_final_project/assets/discover_planet.png')}>
               </Image>
               <Text style={styles.caption}> Search {"\n"} Planets</Text>
-            
+
             </Pressable>
-            
+
             <View style={{ width: '40%' }} />
             {/* This is the button used for creating  a planet */}
             <Pressable style={styles.add_button} onPress={() => {
@@ -313,6 +332,7 @@ export default function App() {
 
   function SunPage({ navigation }) {
     let [whats_hot, setWhatsHot] = useState('');
+    let [tags, setTags] = useState('');
     let [count, setCount] = useState(0);
     let [caption_0, setPolaroid0Caption] = useState('');
     let [caption_1, setPolaroid1Caption] = useState('');
@@ -320,7 +340,7 @@ export default function App() {
     let [caption_3, setPolaroid3Caption] = useState('');
     let [caption_4, setPolaroid4Caption] = useState('');
     let [caption_5, setPolaroid5Caption] = useState('');
-    
+
     // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
     // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
     const getImageFromUploader0 = (image_data) => {
@@ -365,14 +385,14 @@ export default function App() {
     // TODO:
     // Populate info in your dictionary in order to make sure changes persist
     return (
-      
+
       <SafeAreaView style={styles.sunPageBackground}>
         <Pressable
           style={styles.resurfaceButton}
-          onPress = {() => {
+          onPress={() => {
             navigation.navigate('Your Solar System');
           }}>
-            <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+          <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button} />
         </Pressable>
         {/* This section handles the what's hot area, the text is the label, and the TextInput is
       to allow you to change what's shown -- make sure to populate this into a dict so changes
@@ -389,8 +409,23 @@ export default function App() {
             defaultValue={global_whats_hot}
             onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
             onEndEditing={() => setGlobalWhatsHot(whats_hot)}
-            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-            />
+          //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+          />
+        </View>
+
+        <View style={styles.whatsHotHeader}>
+          <Text style={styles.whatsHotHeaderText}>
+            My tags
+          </Text>
+          {/*TODO POPULATE THIS INTO A DICTIONARY */}
+          <TextInput
+            style={styles.whatsHot_textbox}
+            placeholder={" Words to describe my journey...   "}
+            defaultValue={global_tags}
+            onChangeText={newText => setTags(newText)}    // uses the setText function and returns text, the updates input
+            onEndEditing={() => setGlobalTags(tags)}
+          //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
+          />
         </View>
 
         <ScrollView style={styles.scrollView}>
@@ -404,7 +439,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_0}
                     onChangeText={newText => setPolaroid0Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid0Caption(caption_0)}
@@ -422,7 +457,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_1}
                     onChangeText={newText => setPolaroid1Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid1Caption(caption_1)}
@@ -444,7 +479,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_2}
                     onChangeText={newText => setPolaroid2Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid2Caption(caption_2)}
@@ -462,7 +497,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_3}
                     onChangeText={newText => setPolaroid3Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid3Caption(caption_3)}
@@ -474,7 +509,7 @@ export default function App() {
             </View>
 
             <View style={{ height: 15 }} />
-            
+
             <View style={styles.sunScreen_rows}>
               <View style={styles.sunScreen_col}>
                 <View style={styles.polaroid_photo}>
@@ -484,7 +519,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_4}
                     onChangeText={newText => setPolaroid4Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid4Caption(caption_4)}
@@ -502,7 +537,7 @@ export default function App() {
                   <TextInput
                     style={styles.polaroid_text_input}
                     placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholderTextColor='black'
                     defaultValue={global_caption_5}
                     onChangeText={newText => setPolaroid5Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid5Caption(caption_5)}
@@ -561,10 +596,10 @@ export default function App() {
           source={require('../synastry_final_project/assets/stars.png')}>
           <Pressable
             style={styles.resurfaceButton}
-            onPress = {() => {
+            onPress={() => {
               navigation.navigate('Your Solar System');
             }}>
-              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+            <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button} />
           </Pressable>
           <View style={styles.create_planet_header}>
             <Text style={styles.create_planet_text}>
@@ -580,7 +615,7 @@ export default function App() {
             />
             <TextInput
               style={styles.search_textbox}
-              placeholder=" New Name for Planet...   "
+              placeholder=" Rename planet...   "
               onChangeText={text => setName(text)}
               value={name}
             />
@@ -605,6 +640,7 @@ export default function App() {
   // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
     let [whats_hot, setWhatsHot] = useState('');
+    let [tags, setTags] = useState('');
 
     const setPlanetWhatsHot = (id) => {
       for (let i = 0; i < SolarSystemData.length; i++) {
@@ -614,6 +650,13 @@ export default function App() {
       }
     }
 
+    const setPlanetTags = (id) => {
+      for (let i = 0; i < SolarSystemData.length; i++) {
+        if (SolarSystemData[i].id == id) {
+          SolarSystemData[i].tags[0] = tags;
+        }
+      }
+    }
 
     const solar_system = route.params["solarSystem"]
     //console.log(solar_system["id"])
@@ -674,17 +717,8 @@ persist*/}
               Instagram: {solar_system["socials"]["instagram"]}
             </Text>
             <Text style={styles.whatsHotHeaderTextPlanetPage}>
-              Here's what's hot at {solar_system["title"]}:
+              What's hot at {solar_system["title"]}:{"\n"}{solar_system["whats_hot"] ? solar_system["whats_hot"] : "Nothing added yet."}
             </Text>
-            {/*TODO POPULATE THIS INTO A DICTIONARY */}
-            <TextInput
-              style={styles.whatsHot_textboxPlanetPage}
-              placeholder={" We're feeling...   "}
-              defaultValue={solar_system["whats_hot"]}
-              onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
-              onEndEditing={() => setPlanetWhatsHot(solar_system["id"])}
-            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-            />
           </View>
 
 
@@ -750,7 +784,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
-  const PlanetSearch = ({navigation}) => {
+  const PlanetSearch = ({ navigation }) => {
     let [searched, searchText] = useState('');
     let [found_index, setFoundIndex] = useState(-1);
 
@@ -761,7 +795,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       if (searched.length != 0) {
         let i = 0;
         for (i = 0; i < SolarSystemData.length; i++) {
-          if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
+          if (SolarSystemData[i].tags.includes(searched.toLowerCase())) {
             setFoundIndex(i);
             console.log("found " + i)
             break;
@@ -775,7 +809,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       }
     }, [searched])
 
-    const Bold = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+    const Bold = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
     return (
       <SafeAreaView style={styles.search_container}>
@@ -786,28 +820,28 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
           <View style={styles.search_top_third}>
             <Pressable
               style={styles.resurfaceButton}
-              onPress = {() => {
+              onPress={() => {
                 navigation.navigate('Your Solar System');
               }}>
-                <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button} />
             </Pressable>
             <View style={styles.search_for_planet_text}>
-                <Text style={styles.search_for_planet_text_content}>
-                  Search for a planet to visit!
-                </Text>
+              <Text style={styles.search_for_planet_text_content}>
+                Search for a planet to visit!
+              </Text>
             </View>
           </View>
           <View style={styles.search_bottom_third}>
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
               <TextInput
                 style={styles.search_textbox}
                 placeholder=" Tell us what you're looking for...   "
                 onChangeText={text => searchText(text)}
                 value={searched}
-                />
+              />
             </TouchableWithoutFeedback>
             <View style={{ height: '5%' }} />
-            {found_index != -1 &&    
+            {found_index != -1 &&
               <View style={styles.planet_to_visit_preview}>
                 <View style={styles.planet_preview_text_box}>
                   <Text style={styles.planet_preview_text}>
@@ -844,11 +878,11 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Your Solar System" component={HomePage} options={{headerShown: false}} />
+        <Stack.Screen name="Your Solar System" component={HomePage} options={{ headerShown: false }} />
         <Stack.Screen name="Visiting a Planet" component={PlanetPage} />
-        <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
-        <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
-        <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
+        <Stack.Screen name="Your Personal Space" component={SunPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{ headerShown: false }} />
+        <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -893,12 +927,12 @@ const styles = StyleSheet.create({
     fontSize: '24',
     color: 'white',
     textShadowColor: 'rgba(255, 255, 255, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 5,
   },
   add_planet_box: {
     height: '80%',
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'center',
   },
   search_top_third: {
@@ -920,7 +954,7 @@ const styles = StyleSheet.create({
     fontSize: '24',
     color: 'white',
     textShadowColor: 'rgba(255, 255, 255, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 5,
   },
   search_textbox: {
@@ -1086,9 +1120,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   caption: {
-    color:'white',
-    textAlign:'center',
-    
+    color: 'white',
+    textAlign: 'center',
+
   },
   planetPage_rows: {
     backgroundColor: 'navy',
@@ -1115,7 +1149,7 @@ const styles = StyleSheet.create({
     fontSize: '24',
     textAlign: 'center',
     textShadowColor: 'rgba(255, 255, 255, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 5,
   },
   planets_visual: {
@@ -1186,7 +1220,7 @@ const styles = StyleSheet.create({
   whatsHotHeaderPlanetPage: {
     backgroundColor: 'navy',
     width: '100%',
-    height: '20%',
+    height: '30%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
