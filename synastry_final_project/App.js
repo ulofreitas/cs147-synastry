@@ -64,6 +64,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "diabetes",
     ]
   },
   {
@@ -83,6 +86,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "pcos",
     ]
   },
   {
@@ -102,6 +108,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "culture",
     ]
   },
   {
@@ -121,6 +130,9 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
+      "food",
     ]
   },
   {
@@ -140,6 +152,8 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
     ]
   },
   {
@@ -159,6 +173,8 @@ const SolarSystemData = [
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
       { image: null, caption: 'Caption', },
+    ],
+    tags: [
     ]
   },
 
@@ -757,7 +773,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       if (searched.length != 0) {
         let i = 0;
         for (i = 0; i < SolarSystemData.length; i++) {
-          if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
+          if (SolarSystemData[i].tags.includes(searched.toLowerCase())) {
             setFoundIndex(i);
             console.log("found " + i)
             break;
