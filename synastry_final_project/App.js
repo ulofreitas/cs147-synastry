@@ -1,4 +1,4 @@
-import { StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
@@ -16,14 +16,59 @@ import nullPlanet from '../synastry_final_project/assets/null_planet.png';
 import createPlanet from '../synastry_final_project/assets/create_planet_white.png';
 import discoverPlanet from '../synastry_final_project/assets/discover_planet.png';
 import Modal from "react-native-modal";
-
-
+import keri_image_1 from '../synastry_final_project/assets/keri_image_1.jpeg';
+import keri_image_2 from '../synastry_final_project/assets/keri_image_2.jpeg';
+import keri_image_3 from '../synastry_final_project/assets/keri_image_3.jpeg';
+import keri_image_4 from '../synastry_final_project/assets/keri_image_4.jpeg';
+import keri_image_5 from '../synastry_final_project/assets/keri_image_5.jpeg';
+import keri_image_6 from '../synastry_final_project/assets/keri_image_6.jpeg';
+import keri_planet from '../synastry_final_project/assets/keri_planet.jpeg';
+import maurice_planet from '../synastry_final_project/assets/maurice_planet.jpeg';
 
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-
+const PopulatedPlanetData = [
+  {
+    id: '1',
+    img: Image.resolveAssetSource(maurice_planet).uri,
+    title: "Maurice's Planet",
+    phone_number: "(601)-383-1782",
+    email: "mauricek@gmail.com",
+    instagram: "@maurice_blessed",
+    tags: ['family', 'man', 'dine', 'weight loss', 'young', 'gym'],
+    feeling: ['blessed'],
+    posts:[
+      {image: "", caption: ""},
+      {image: "", caption: ""},
+      {image: "", caption: ""},
+      {image: "", caption: ""},
+      {image: "", caption: ""},
+      {image: "", caption: ""}
+    ]
+  },
+  {
+    id: '2',
+    title: "Keri's Planet",
+    img: Image.resolveAssetSource(keri_planet).uri,
+    phone_number: '(347)-981-8123',
+    email: 'kerij@gmail.com',
+    instagram: '@kerij',
+    tags: [
+      'diabetes', 'woman', 'older', 'pcos', 'girl'
+    ],
+    whats_hot: 'reflective',
+    posts:[
+      {image: Image.resolveAssetSource(keri_image_1).uri, caption: "New glucose monitor!"},
+      {image: Image.resolveAssetSource(keri_image_2).uri, caption: "Yum!"},
+      {image: Image.resolveAssetSource(keri_image_3).uri, caption: "Love hanging with grandkids!"},
+      {image: Image.resolveAssetSource(keri_image_4).uri, caption: "Checkup today!"},
+      {image: Image.resolveAssetSource(keri_image_5).uri, caption: "Went on a walk"},
+      {image: Image.resolveAssetSource(keri_image_6).uri, caption: "Slept in today!"}
+    ]
+  },
+];
 
 
 
@@ -46,7 +91,27 @@ const windowHeight = Dimensions.get('window').height;
 */
 
 // Usage of Image.resolveAssetSource to get URI based off of https://medium.com/swlh/how-to-obtain-a-uri-for-an-image-asset-in-react-native-with-expo-88dfbe1023b8
-const SolarSystemData = [
+
+let SolarSystemData = [
+{ id: '',
+  img: null,
+  title: "",
+  phone_number: "",
+  email: "",
+  instagram: "",
+  tags: [],
+  feeling: "",
+  posts:[
+    {image: "", caption: ""},
+    {image: "", caption: ""},
+    {image: "", caption: ""},
+    {image: "", caption: ""},
+    {image: "", caption: ""},
+    {image: "", caption: ""}
+  ]
+},
+];
+let SolarSystemData2 = [
   {
 
     id: '1',
@@ -192,6 +257,33 @@ const Polaroids = [
   },
 ]
 
+const Posts = [
+  {
+    image: Image.resolveAssetSource(keri_image_1).uri,
+    caption: 'New glucose monitor!',
+  },
+  {
+    image: Image.resolveAssetSource(keri_image_2).uri,
+    caption: 'Yum!',
+  },
+  {
+    image: Image.resolveAssetSource(keri_image_3).uri,
+    caption: 'Love my grandkids!',
+  },
+  {
+    image: Image.resolveAssetSource(keri_image_4).uri,
+    caption: 'Checkup today!',
+  },
+  {
+    image: Image.resolveAssetSource(keri_image_6).uri,
+    caption: 'Went on a walk',
+  },
+  {
+    image: Image.resolveAssetSource(keri_image_6).uri,
+    caption: 'Slept in today!',
+  },
+]
+
 export default function App() {
 
 
@@ -223,7 +315,7 @@ export default function App() {
         <Pressable style={styles.button} onPress={() => {
           // navigates to planet screen when a planet is clicked, and passes the planet entry in the dictionary
           // i.e if planet 6 is clicked, all dict planet 6 values are passed
-          navigation.navigate('Visiting a Planet', { solarSystem: item });
+          navigation.navigate('Visiting a Planet', { solarSystem: item, populatedPlanets: "" });
         }}>
           <Image
             style={styles.planet}
@@ -603,62 +695,62 @@ export default function App() {
   // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
     let [whats_hot, setWhatsHot] = useState('');
-
-    const setPlanetWhatsHot = (id) => {
-      for (let i = 0; i < SolarSystemData.length; i++) {
-        if (SolarSystemData[i].id == id) {
-          SolarSystemData[i].whats_hot = whats_hot;
-        }
-      }
+    let solar_system = {};
+    if (route.params["solarSystem"] === "") {
+      solar_system = route.params["populatedPlanets"];
+    } else {
+      solar_system = route.params["solarSystem"];
     }
+    // const img0 = solar_system.posts[0];
+    // const img1 = solar_system.posts[1];
+    // const img2 = solar_system.posts[2];
+    // const img3 = solar_system.posts[3];
+    // const img4 = solar_system.posts[4];
+    // const img5 = solar_system.posts[5];
 
-
-    const solar_system = route.params["solarSystem"]
+    // const solar_system = route.params["solarSystem"]
     //console.log(solar_system["id"])
 
 
 
     // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
     // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
-    const getImageFromUploader0 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][0].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader1 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][1].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader2 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][2].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader3 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][3].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader4 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][4].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader5 = (image_data) => {
-      console.log("getImageFromUploader");
-      solar_system["polaroids"][5].image = image_data;
-      console.log(image_data);
-    }
+
 
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     }
+    const startButton = SolarSystemData.includes(solar_system);
+    const [clickedId, setClickedId ] = useState(startButton);
+    const text2 = "Add To Solar System";
+    const text1 = "Remove from Solar Sytem";
 
+    const removeElem = (elem) => {
+      return elem.title !== solar_system.title;
+    }
+    const handleClick = () => {
+      if (clickedId) {
+        SolarSystemData = SolarSystemData.filter(removeElem);
+        setClickedId(false);
+      } else {
+        SolarSystemData.push(solar_system);
+        setClickedId(true);
+        console.log(SolarSystemData);
+      } 
+    }
     return (
       <SafeAreaView style={styles.container}>
+          <View style={styles.planet_top_third}>
+            <Pressable
+              style={styles.resurfaceButton}
+              onPress = {() => {
+                navigation.navigate("Your Solar System");
+              }}>
+                <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+            </Pressable>
+          </View>
         <ScrollView style={styles.scrollViewPlanetPage}>
 
 
@@ -669,15 +761,15 @@ persist*/}
 
           <View style={styles.whatsHotHeaderPlanetPage}>
             <Button title="PLANET CONTACT" onPress={toggleModal} />
-            
+            <View style={styles.addToSolarSys}>
               <Modal isVisible={isModalVisible}>
                 <View style={styles.ModalBox}>
                   <Text style={styles.ModalText}>Planet Contact</Text>
                   <Text style={{color:"gray"}}>
-                  Phone Number: (601)-379-7092
+                  Phone Number: {solar_system.phone_number}
                   </Text>
                   <Text style={{color:"gray"}}>
-                    Email: kerrijenkins@gmail.com
+                    Email: {solar_system.email}
                   </Text>
                   <Text style={{color:"gray"}}>
                     Instagram: @kerrij23
@@ -687,22 +779,27 @@ persist*/}
                   </Pressable>
               </View>
             </Modal>
+            <TouchableOpacity 
+                    onPress ={() => handleClick()}
+                    style={
+                        clickedId ? styles.activeButton : styles.inactiveButton }>
+                <Text
+                    style={clickedId ? styles.activeText: styles.inactiveText }>
+                        {clickedId ? text1 : text2}
+                </Text>    
+            </TouchableOpacity>
+            </View>
 
             <Text style={styles.whatsHotHeaderTextPlanetPage}>
-              Here's What's Hot at {solar_system["title"]}:
+              Here's What's Hot at Keri's Planet:
             </Text>
 
 
             {/*TODO POPULATE THIS INTO A DICTIONARY */}
-            <TextInput
+            <Text
               style={styles.whatsHot_textboxPlanetPage}
-              placeholder={" We're feeling...   "}
-              placeholderTextColor={"#b0b3b8"}
-              defaultValue={solar_system["whats_hot"]}
-              onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
-              onEndEditing={() => setPlanetWhatsHot(solar_system["id"])}
             //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-            />
+            > We're feeling healthy!</Text>
           </View>
 
 
@@ -712,33 +809,44 @@ TODO:
 
 MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
 SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
-
+          
           <View style={styles.photosPlanetPage}>
             <View style={styles.planetPage_rows}>
 
 
                 <View style={styles.planetPage_col}>
-                  <UploadImage passImage={getImageFromUploader0} image={solar_system["polaroids"][0].image} />
-                  <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>      </Text>
+                <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[0].image }}>
+                    </Image>
+                  <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>{Posts[0].caption}</Text>
 
 
               </View>
               <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader1} image={solar_system["polaroids"][1].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>         </Text>
+              <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[1].image }}>
+                    </Image>                
+                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[1].caption}</Text>
               </View>
 
 
             </View>
             <View style={styles.planetPage_rows}>
               <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader2} image={solar_system["polaroids"][2].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>        </Text>
-
+              <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[2].image }}>
+                    </Image>                
+                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[2].caption}</Text>
               </View>
               <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader3} image={solar_system["polaroids"][3].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>       </Text>
+              <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[3].image }}>
+                    </Image>                
+                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[3].caption}</Text>
               </View>
 
 
@@ -749,13 +857,19 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
             <View style={styles.planetPage_rows}>
               <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader4} image={solar_system["polaroids"][4].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>       </Text>
+              <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[4].image }}>
+                    </Image>                
+                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[4].caption}</Text>
 
               </View>
               <View style={styles.planetPage_col}>
-                <UploadImage passImage={getImageFromUploader5} image={solar_system["polaroids"][5].image} />
-                <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>      </Text>
+              <Image
+                      style={styles.polaroid_photo_planet}
+                      source={{ uri: Posts[5].image }}>
+                    </Image>                
+                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[5].caption}</Text>
               </View>
 
             </View>
@@ -781,14 +895,22 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       console.log(found_index)
       if (searched.length != 0) {
         let i = 0;
-        for (i = 0; i < SolarSystemData.length; i++) {
-          if (SolarSystemData[i].title.toLowerCase().includes(searched.toLowerCase())) {
-            setFoundIndex(i);
-            console.log("found " + i)
+        for (i = 0; i < PopulatedPlanetData.length; i++) {
+          let j = 0;
+          const currtags = PopulatedPlanetData[i].tags;
+          for (j = 0; j < currtags.length; j++) {
+            if (currtags[j].toLowerCase().includes(searched.toLowerCase())) {
+              setFoundIndex(i);
+              console.log("found " + i);
+              break;
+            }
+          }
+          if (j !== currtags.length) {
             break;
           }
         }
-        if (i == SolarSystemData.length) {
+
+        if (i == PopulatedPlanetData.length) {
           setFoundIndex(-1);
         }
       } else {
@@ -832,17 +954,17 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
               <View style={styles.planet_to_visit_preview}>
                 <View style={styles.planet_preview_text_box}>
                   <Text style={styles.planet_preview_text}>
-                    You may be interested: <Bold>{SolarSystemData[found_index].title}</Bold>
+                    You may be interested: <Bold>{PopulatedPlanetData[found_index].title}</Bold>
                   </Text>
                 </View>
                 <Pressable style={styles.planet_to_visit_button} onPress={() => {
-                  navigation.navigate('Visiting a Planet', { solarSystem: SolarSystemData[found_index] });
+                  navigation.navigate('Visiting a Planet', { solarSystem: "", populatedPlanets: PopulatedPlanetData[found_index] });
                 }}
                 >
                   <View style={styles.planet_preview}>
                     <Image
                       style={styles.planet_preview}
-                      source={{ uri: SolarSystemData[found_index].img }}>
+                      source={{ uri: PopulatedPlanetData[found_index].img }}>
                     </Image>
                   </View>
                 </Pressable>
@@ -926,6 +1048,75 @@ const styles = StyleSheet.create({
     height: '10%',
     width: '100%',
     flexDirection: 'column',
+  },
+  planet_top_third: {
+    height: '5%',
+    width: '100%',
+    flexDirection: 'column',
+  },
+  activeButton: {
+    backgroundColor: "rgba(0,0,0, 0.3)",
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 22,
+    borderRadius: 5,
+    borderColor: "rgba(0,0,0, 0.3)",
+    flex: 1,
+    color: "white",
+    flexDirection: 'column',
+    borderWidth: '2',
+    height: 40,
+    paddingBottom: 0,
+    paddingTop: 0,
+
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 2, // Android
+    flexDirection: 'row',
+},
+inactiveButton: {
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 22,
+    borderRadius: 5,
+    borderColor: 'white',
+    flex: 1,
+    color: '#0F0B4D',
+    borderWidth: '2',
+    height: 40,
+    paddingBottom: 0,
+    paddingTop: 0,
+
+    // code adapted from Stack Overflow https://stackoverflow.com/questions/50162879/create-raised-or-shadow-effect-on-touchableopacity-react-native
+    shadowColor: 'rgba(255,255,255, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    elevation: 2, // Android
+    flexDirection: 'row',
+},
+
+activeText: {
+    fontSize: 14,
+    color: 'white',
+},
+
+inactiveText: {
+    fontSize: 14,
+    color: '#0F0B4D',
+},
+  addToSolarSys: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 60, 
+    width: "75%",  
+    justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   search_bottom_third: {
     height: '55%',
@@ -1015,6 +1206,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 10,
     marginTop: 10,
+    paddingTop: 10,
+    color: '#b0b3b8',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   scrollView: {
@@ -1090,6 +1285,16 @@ const styles = StyleSheet.create({
     height: '70%',
     justifyContent: 'center',
     alignContent: 'center',
+  },
+  polaroid_photo_planet: {
+    borderRadius: 99999,
+    width: '60%',
+    height: '60%',
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 30,
+    paddinTop: 30,
   },
   polaroid_text_box: {
     width: '90%',
@@ -1218,7 +1423,7 @@ const styles = StyleSheet.create({
   whatsHotHeaderPlanetPage: {
     backgroundColor: 'navy',
     width: '100%',
-    height: '20%',
+    height: 200,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
