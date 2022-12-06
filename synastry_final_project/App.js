@@ -668,19 +668,19 @@ to allow you to change what's shown -- make sure to populate this into a dict so
 persist*/}
 
           <View style={styles.whatsHotHeaderPlanetPage}>
-            <Button title="GROUP CONTACT" onPress={toggleModal} />
+            <Button title="PLANET CONTACT" onPress={toggleModal} />
             
               <Modal isVisible={isModalVisible}>
                 <View style={styles.ModalBox}>
-                  <Text style={styles.ModalText}>Group Members</Text>
+                  <Text style={styles.ModalText}>Planet Contact</Text>
                   <Text style={{color:"gray"}}>
-                  Phone Number: {solar_system["phone_number"]}
+                  Phone Number: (601)-379-7092
                   </Text>
                   <Text style={{color:"gray"}}>
-                    Email: {solar_system["email"]}
+                    Email: kerrijenkins@gmail.com
                   </Text>
                   <Text style={{color:"gray"}}>
-                    Instagram: {solar_system["socials"]["instagram"]}
+                    Instagram: @kerrij23
                   </Text>
                   <Pressable style={styles.ModalButtonBox} onPress={toggleModal}>
                     <Text style={styles.ModalButtonText}>Close</Text>
@@ -866,7 +866,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Your Solar System" component={HomePage} options={{headerShown: false}} />
-        <Stack.Screen name="Visiting a Planet" component={PlanetPage} />
+        <Stack.Screen name="Visiting a Planet" component={PlanetPage} options={{headerShown: false}}/>
         <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
         <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
         <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
