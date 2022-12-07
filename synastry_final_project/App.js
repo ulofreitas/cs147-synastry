@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
 import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
 import { warmUpAsync } from "expo-web-browser";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { WebView } from "react-native-webview";
 import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,58 +16,109 @@ import Stars from '../synastry_final_project/assets/stars.png';
 import nullPlanet from '../synastry_final_project/assets/null_planet.png';
 import createPlanet from '../synastry_final_project/assets/create_planet_white.png';
 import discoverPlanet from '../synastry_final_project/assets/discover_planet.png';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import Modal from "react-native-modal";
-import keri_image_1 from '../synastry_final_project/assets/keri_image_1.jpeg';
-import keri_image_2 from '../synastry_final_project/assets/keri_image_2.jpeg';
-import keri_image_3 from '../synastry_final_project/assets/keri_image_3.jpeg';
-import keri_image_4 from '../synastry_final_project/assets/keri_image_4.jpeg';
-import keri_image_5 from '../synastry_final_project/assets/keri_image_5.jpeg';
-import keri_image_6 from '../synastry_final_project/assets/keri_image_6.jpeg';
-import keri_planet from '../synastry_final_project/assets/keri_planet.jpeg';
+import { KERIPOSTS } from './data';
+import keri_image_1 from '../synastry_final_project/assets/keri/keri_image_1.jpeg';
+import keri_image_2 from '../synastry_final_project/assets/keri/keri_image_2.jpeg';
+import keri_image_3 from '../synastry_final_project/assets/keri/keri_image_3.jpeg';
+import keri_image_4 from '../synastry_final_project/assets/keri/keri_image_4.jpeg';
+import keri_image_5 from '../synastry_final_project/assets/keri/keri_image_5.jpeg';
+import keri_image_6 from '../synastry_final_project/assets/keri/keri_image_6.jpeg';
+import keri_planet from '../synastry_final_project/assets/keri/keri_planet.jpeg';
 import maurice_planet from '../synastry_final_project/assets/maurice_planet.jpeg';
+import default_avatar from '../synastry_final_project/assets/default_avatar.jpeg';
+import SearchMasonry from './components/SearchMasonry';
 
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
+let User = {
+  id: '1',
+  name: "Tomi",
+  avatar: Image.resolveAssetSource(default_avatar).uri, 
+  phone_number: "",
+  email: "",
+  instagram: '',
+  tags: []
+}
 const PopulatedPlanetData = [
   {
     id: '1',
+    profile: '../synastry_final_project/assets/maurice_planet.jpeg',
     img: Image.resolveAssetSource(maurice_planet).uri,
-    title: "Maurice's Planet",
+    person: 'Maurice',
+    title: 'Maurice\'s Planet',
     phone_number: "(601)-383-1782",
     email: "mauricek@gmail.com",
     instagram: "@maurice_blessed",
-    tags: ['family', 'man', 'dine', 'weight loss', 'young', 'gym'],
-    feeling: ['blessed'],
-    posts:[
-      {image: "", caption: ""},
-      {image: "", caption: ""},
-      {image: "", caption: ""},
-      {image: "", caption: ""},
-      {image: "", caption: ""},
-      {image: "", caption: ""}
-    ]
+    tags: ['family', 'man', 'decathalon', 'weight loss', 'young', 'gym'],
   },
   {
     id: '2',
-    title: "Keri's Planet",
+    person: 'Keri',
+    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
+    title: 'Keri\'s Planet',
     img: Image.resolveAssetSource(keri_planet).uri,
     phone_number: '(347)-981-8123',
     email: 'kerij@gmail.com',
     instagram: '@kerij',
     tags: [
-      'diabetes', 'woman', 'older', 'pcos', 'girl'
+      'diabetes', 'woman', 'indian', 'girl'
     ],
-    whats_hot: 'reflective',
-    posts:[
-      {image: Image.resolveAssetSource(keri_image_1).uri, caption: "New glucose monitor!"},
-      {image: Image.resolveAssetSource(keri_image_2).uri, caption: "Yum!"},
-      {image: Image.resolveAssetSource(keri_image_3).uri, caption: "Love hanging with grandkids!"},
-      {image: Image.resolveAssetSource(keri_image_4).uri, caption: "Checkup today!"},
-      {image: Image.resolveAssetSource(keri_image_5).uri, caption: "Went on a walk"},
-      {image: Image.resolveAssetSource(keri_image_6).uri, caption: "Slept in today!"}
-    ]
+  },
+  {
+    id: '3',
+    person: 'Inda',
+    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
+    title: 'Keri\'s Planet',
+    img: Image.resolveAssetSource(keri_planet).uri,
+    phone_number: '(347)-981-8123',
+    email: 'kerij@gmail.com',
+    instagram: '@kerij',
+    tags: [
+      'nigerian', 'woman', 'pcos', 'girl'
+    ],
+  },
+  {
+    id: '4',
+    person: 'Arjun',
+    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
+    title: 'Keri\'s Planet',
+    img: Image.resolveAssetSource(keri_planet).uri,
+    phone_number: '(347)-981-8123',
+    email: 'kerij@gmail.com',
+    instagram: '@kerij',
+    tags: [
+      'nigerian', 'woman', 'pcos', 'girl'
+    ],
+  },
+  {
+    id: '5',
+    person: 'Alison',
+    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
+    title: 'Keri\'s Planet',
+    img: Image.resolveAssetSource(keri_planet).uri,
+    phone_number: '(347)-981-8123',
+    email: 'kerij@gmail.com',
+    instagram: '@kerij',
+    tags: [
+      'nigerian', 'woman', 'pcos', 'girl'
+    ],
+  },
+  {
+    id: '6',
+    person: 'Tyler',
+    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
+    title: 'Keri\'s Planet',
+    img: Image.resolveAssetSource(keri_planet).uri,
+    phone_number: '(347)-981-8123',
+    email: 'kerij@gmail.com',
+    instagram: '@kerij',
+    tags: [
+      'nigerian', 'woman', 'pcos', 'girl'
+    ],
   },
 ];
 
@@ -92,142 +144,20 @@ const PopulatedPlanetData = [
 
 // Usage of Image.resolveAssetSource to get URI based off of https://medium.com/swlh/how-to-obtain-a-uri-for-an-image-asset-in-react-native-with-expo-88dfbe1023b8
 
+// find a way to exclude first element of list when redering, and make sure to update ID of added to length 
+// of Solar System Data + 1
 let SolarSystemData = [
 { id: '',
-  img: null,
-  title: "",
-  phone_number: "",
-  email: "",
-  instagram: "",
-  tags: [],
-  feeling: "",
-  posts:[
-    {image: "", caption: ""},
-    {image: "", caption: ""},
-    {image: "", caption: ""},
-    {image: "", caption: ""},
-    {image: "", caption: ""},
-    {image: "", caption: ""}
-  ]
+  person: '',
+  profile: '',
+  title: '',
+  img: '',
+  phone_number: '',
+  email: '',
+  instagram: '',
+  tags: [
+  ],
 },
-];
-let SolarSystemData2 = [
-  {
-
-    id: '1',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 1',
-    whats_hot: '',
-    phone_number: '3141592653',
-    email: 'random@outlook.com',
-    socials: {
-      instagram: "@random",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-  {
-    id: '2',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 2',
-    whats_hot: '',
-    phone_number: '1357911131',
-    email: 'person@gmail.com',
-    socials: {
-      instagram: "@person",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-  {
-    id: '3',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 3',
-    whats_hot: '',
-    phone_number: '4823772592',
-    email: 'cs147@gmail.com',
-    socials: {
-      instagram: "@cs147",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-  {
-    id: '4',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 4',
-    whats_hot: '',
-    phone_number: '9093857273',
-    email: 'person@yahoo.com',
-    socials: {
-      instagram: "@person_yahoo",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-  {
-    id: '5',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 5',
-    whats_hot: '',
-    phone_number: '5371639422',
-    email: 'hello@website.com',
-    socials: {
-      instagram: "@hello",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-  {
-    id: '6',
-    img: Image.resolveAssetSource(nullPlanet).uri,
-    title: 'Planet 6',
-    whats_hot: '',
-    phone_number: '8481991742',
-    email: 'tired@gmail.com',
-    socials: {
-      instagram: "@tired",
-    },
-    polaroids: [
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-      { image: null, caption: 'Caption', },
-    ]
-  },
-
 ];
 
 const Polaroids = [
@@ -257,37 +187,27 @@ const Polaroids = [
   },
 ]
 
-const Posts = [
-  {
-    image: Image.resolveAssetSource(keri_image_1).uri,
-    caption: 'New glucose monitor!',
-  },
-  {
-    image: Image.resolveAssetSource(keri_image_2).uri,
-    caption: 'Yum!',
-  },
-  {
-    image: Image.resolveAssetSource(keri_image_3).uri,
-    caption: 'Love my grandkids!',
-  },
-  {
-    image: Image.resolveAssetSource(keri_image_4).uri,
-    caption: 'Checkup today!',
-  },
-  {
-    image: Image.resolveAssetSource(keri_image_6).uri,
-    caption: 'Went on a walk',
-  },
-  {
-    image: Image.resolveAssetSource(keri_image_6).uri,
-    caption: 'Slept in today!',
-  },
-]
+
 
 export default function App() {
 
 
   // two functions that update text / searched values --> This is used for the TextInput functionality  
+  let [fontsLoaded] = useFonts({
+    'Buffalo': require('./assets/fonts/Buffalo.otf'),
+    'Norwester': require('./assets/fonts/Norwester.otf'),
+    'CodePro': require('./assets/fonts/CodePro.otf'),
+    'Montserrat': require('./assets/fonts/Montserrat.ttf'),
+    'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'PermanentMarker': require('./assets/fonts/PermanentMarker-Regular.ttf')
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   let [text, setText] = useState('');
   let [global_whats_hot, setGlobalWhatsHot] = useState('');
   let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
@@ -331,7 +251,9 @@ export default function App() {
   // This is the main solar system page
   function HomePage({ navigation }) {
     const isFocused = useIsFocused();
-
+    const removeDummy = (item) => {
+      return '' !== item.title;
+    }
     return (
       // These are all the rendered planets, rendered using a flatlist
       <SafeAreaView style={styles.container}>
@@ -340,13 +262,16 @@ export default function App() {
           source={require('../synastry_final_project/assets/stars.png')}>
           <View style={styles.solar_system_header}>
             <Text style={styles.my_solar_system_text}>
-              My Solar System
+              My
+            </Text>
+            <Text style={styles.my_solar_system_text}>
+              Solar System
             </Text>
           </View>
           {isFocused &&
             <View style={styles.planets_visual}>
               <FlatList
-                data={SolarSystemData}
+                data={SolarSystemData.filter(removeDummy)}
                 renderItem={({ item }) => renderItem(item, navigation)}
                 keyExtractor={item => item.id}
                 numColumns={3}
@@ -370,7 +295,7 @@ export default function App() {
             <View style={{ width: '40%' }} />
             {/* This is the button used for creating  a planet */}
             <Pressable style={styles.add_button} onPress={() => {
-              navigation.navigate('Create a Planet');
+              navigation.navigate('Profile');
             }}
             >
               {/* This is the image used for creating  a planet */}
@@ -692,6 +617,7 @@ export default function App() {
 
 
 
+
   // Populate the info in the dictionary entry passed in
   const PlanetPage = ({ navigation, route }) => {
     let [whats_hot, setWhatsHot] = useState('');
@@ -722,13 +648,17 @@ export default function App() {
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
     }
+
     const startButton = SolarSystemData.includes(solar_system);
     const [clickedId, setClickedId ] = useState(startButton);
-    const text2 = "Add To Solar System";
-    const text1 = "Remove from Solar Sytem";
+    const text2 = "Add Planet";
+    const text1 = "Remove Planet";
 
     const removeElem = (elem) => {
       return elem.title !== solar_system.title;
+    }
+    const removeDummy = () => {
+      return '' !== solar_system.title;
     }
     const handleClick = () => {
       if (clickedId) {
@@ -736,21 +666,53 @@ export default function App() {
         setClickedId(false);
       } else {
         SolarSystemData.push(solar_system);
+        SolarSystemData = SolarSystemData.filter(removeDummy);
         setClickedId(true);
-        console.log(SolarSystemData);
       } 
     }
+    const contactText = solar_system.person + '\'s Contact';
+    
+    let posts;
+    switch (solar_system.name) {
+      case 'Maurice':
+        posts = KERIPOSTS;
+        break;
+      case 'Keri':
+        posts = KERIPOSTS;
+        break;
+      default:
+        posts = KERIPOSTS;
+    }
+
+    //const profileImg = require(solar_system.img);
+    //console.log(profileImg);
+
     return (
       <SafeAreaView style={styles.container}>
-          <View style={styles.planet_top_third}>
-            <Pressable
-              style={styles.resurfaceButton}
-              onPress = {() => {
-                navigation.navigate("Your Solar System");
-              }}>
-                <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
-            </Pressable>
-          </View>
+      <ImageBackground style={styles.stars_background}
+          resizeMode='cover'
+          source={require('../synastry_final_project/assets/PlanetBackground.png')}>
+
+
+
+            <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
+                  <Ionicons style={[{marginRight: 55}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
+                  <TouchableOpacity 
+                                onPress ={() => handleClick()}
+                                style={
+                                    clickedId ? styles.activeButton : styles.inactiveButton }>
+                            <Text
+                                style={clickedId ? styles.activeText: styles.inactiveText }>
+                                    {clickedId ? text1 : text2}
+                            </Text>    
+                    </TouchableOpacity>
+                    <Pressable onPress={toggleModal}>
+                    <MaterialCommunityIcons style={[{marginLeft: 55}]} name="contacts" size={32} color={Themes.synastry_styles.resurface_button}/>
+                  </Pressable>
+                </View>
+
+
+
         <ScrollView style={styles.scrollViewPlanetPage}>
 
 
@@ -760,11 +722,11 @@ to allow you to change what's shown -- make sure to populate this into a dict so
 persist*/}
 
           <View style={styles.whatsHotHeaderPlanetPage}>
-            <Button title="PLANET CONTACT" onPress={toggleModal} />
-            <View style={styles.addToSolarSys}>
+
+
               <Modal isVisible={isModalVisible}>
                 <View style={styles.ModalBox}>
-                  <Text style={styles.ModalText}>Planet Contact</Text>
+                  <Text style={styles.ModalText}> {contactText} </Text>
                   <Text style={{color:"gray"}}>
                   Phone Number: {solar_system.phone_number}
                   </Text>
@@ -772,36 +734,39 @@ persist*/}
                     Email: {solar_system.email}
                   </Text>
                   <Text style={{color:"gray"}}>
-                    Instagram: @kerrij23
+                    Instagram: {solar_system.instagram}
                   </Text>
                   <Pressable style={styles.ModalButtonBox} onPress={toggleModal}>
                     <Text style={styles.ModalButtonText}>Close</Text>
                   </Pressable>
-              </View>
-            </Modal>
-            <TouchableOpacity 
-                    onPress ={() => handleClick()}
-                    style={
-                        clickedId ? styles.activeButton : styles.inactiveButton }>
-                <Text
-                    style={clickedId ? styles.activeText: styles.inactiveText }>
-                        {clickedId ? text1 : text2}
-                </Text>    
-            </TouchableOpacity>
+                </View>
+              </Modal>            
+              <View style={[{marginTop: 40, alignContent: 'center', justifyContent: 'center', alignItems: 'center'}]}>
+                <Text style={[{fontFamily: 'Buffalo', fontSize: 25, color: 'white'}]}> Welcome To </Text>
+                <Text style={styles.whatsHotHeaderTextPlanetPage}>
+                  {solar_system.title}:
+                </Text>
+
             </View>
-
-            <Text style={styles.whatsHotHeaderTextPlanetPage}>
-              Here's What's Hot at Keri's Planet:
-            </Text>
-
+            <View style={{ marginTop: 14, alignItems: "center" }}>
+                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
+                        <Image
+                            source={
+                                { uri: solar_system.img }
+                            }
+                            style={[{width: 136, height: 136, borderRadius: 68}]}
+                        />
+                    </View>
+                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+                </View>
 
             {/*TODO POPULATE THIS INTO A DICTIONARY */}
-            <Text
-              style={styles.whatsHot_textboxPlanetPage}
-            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-            > We're feeling healthy!</Text>
-          </View>
 
+          </View>
+          
+          <View style={{ marginTop: 55, alignItems: "center" }}>
+          <SearchMasonry key="all" list={posts} />
+          </View>
 
           {/* This section defines three rows, each with two columns for pictures for people to upload
 
@@ -810,81 +775,109 @@ TODO:
 MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
 SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
           
-          <View style={styles.photosPlanetPage}>
-            <View style={styles.planetPage_rows}>
-
-
-                <View style={styles.planetPage_col}>
-                <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[0].image }}>
-                    </Image>
-                  <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}>{Posts[0].caption}</Text>
-
-
-              </View>
-              <View style={styles.planetPage_col}>
-              <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[1].image }}>
-                    </Image>                
-                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[1].caption}</Text>
-              </View>
-
-
-            </View>
-            <View style={styles.planetPage_rows}>
-              <View style={styles.planetPage_col}>
-              <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[2].image }}>
-                    </Image>                
-                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[2].caption}</Text>
-              </View>
-              <View style={styles.planetPage_col}>
-              <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[3].image }}>
-                    </Image>                
-                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[3].caption}</Text>
-              </View>
-
-
-            </View>
-
-
-
-
-            <View style={styles.planetPage_rows}>
-              <View style={styles.planetPage_col}>
-              <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[4].image }}>
-                    </Image>                
-                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[4].caption}</Text>
-
-              </View>
-              <View style={styles.planetPage_col}>
-              <Image
-                      style={styles.polaroid_photo_planet}
-                      source={{ uri: Posts[5].image }}>
-                    </Image>                
-                    <Text style={{ marginVertical: 10, fontSize: 16, textAlign: 'center', color: 'white' }}> {Posts[5].caption}</Text>
-              </View>
-
-            </View>
-          </View>
+          
 
         </ScrollView>
-
-
+        </ImageBackground>
       </SafeAreaView>
     )
 
   };
 
+  const Profile = ({navigation}) => {
+    let [image, setImage] = useState(null);
+    const [text, onChangeText] = useState(null);
+    const [number, onChangeNumber] = useState(null);
+
+    // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
+    const getImageFromUploader = (image_data) => {
+      console.log("getImageFromUploader");
+      console.log(image_data);
+      setImage(image_data);
+    }
+
+    return (
+      <SafeAreaView style={[{width: "100%", height: "100%", backgroundColor: "#504B8D"}]}>
+
+                  <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
+                      <Ionicons style={[{marginRight: 55}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
+                      <View 
+                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005"}]}>
+                                <Text
+                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Buffalo', fontSize: 28}]}>
+                                        Profile
+                                </Text>    
+                        </View>
+                        <MaterialCommunityIcons style={[{marginLeft: 55}]} name="contacts" size={32} color={"#504B8D"}/>
+                    </View>
+                    <ScrollView>
+                    
+                  <View style={{ marginTop: 38, alignItems: "center" }}>
+                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
+                      <UploadImage passImage={getImageFromUploader} />
+                      <View style={{ marginTop: 25, alignItems: "center" }}>
+                          <Text style={{ fontSize: 50, fontFamily: 'Norwester', color: 'white' }}>{User.name}</Text>
+                          </View>
+                    </View>
+                    <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12}}>
+                    <View 
+                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start"}]}>
+                                <Text
+                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right"}]}>
+                                        Describe Your Health Journey
+                                </Text>    
+                        </View>
+                        <TextInput
+                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeText}
+                            value={text}
+                            placeholderTextColor="#BFBEBE"
+                            placeholder="Bio"
+                          />
+                      </View>
+
+
+
+
+                      <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12}}>
+                    <View 
+                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start"}]}>
+                                <Text
+                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right"}]}>
+                                        Contact
+                                </Text>    
+                        </View>
+                        <TextInput
+                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeNumber}
+                            value={number}
+                            placeholderTextColor="#BFBEBE"
+                            placeholder="Phone Number"
+                          />
+                                                  <TextInput
+                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeNumber}
+                            value={number}
+                            placeholderTextColor="#BFBEBE"
+                            placeholder="Email"
+                          />
+                                                  <TextInput
+                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeNumber}
+                            value={number}
+                            placeholderTextColor="#BFBEBE"
+                            placeholder="Instagram"
+                          />
+                      </View>
+                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+                </View>
+              </ScrollView>
+      </SafeAreaView>
+    );
+  }
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
+  
   const PlanetSearch = ({navigation}) => {
     let [searched, searchText] = useState('');
     let [found_index, setFoundIndex] = useState(-1);
@@ -992,6 +985,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
         <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
         <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
         <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
+        <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -1000,7 +994,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Themes.synastry_styles.home_background,
+    backgroundColor: "#0F0B4D",
     justifyContent: "center",
     alignItems: "center",
     height: '100%',
@@ -1059,10 +1053,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 22,
-    borderRadius: 5,
-    borderColor: "rgba(0,0,0, 0.3)",
-    flex: 1,
+    borderRadius: 20,
+    borderColor: "rgba(0,0,0, 0.1)",
     color: "white",
+    width: "48%",
     flexDirection: 'column',
     borderWidth: '2',
     height: 40,
@@ -1081,9 +1075,9 @@ inactiveButton: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 22,
-    borderRadius: 5,
+    width: "48%",
+    borderRadius: 20,
     borderColor: 'white',
-    flex: 1,
     color: '#0F0B4D',
     borderWidth: '2',
     height: 40,
@@ -1102,11 +1096,13 @@ inactiveButton: {
 activeText: {
     fontSize: 14,
     color: 'white',
+    fontFamily: 'Montserrat-Bold',
 },
 
 inactiveText: {
     fontSize: 14,
     color: '#0F0B4D',
+    fontFamily: 'Montserrat-Bold',
 },
   addToSolarSys: {
     flexDirection: "row",
@@ -1216,8 +1212,11 @@ inactiveText: {
     height: '85%'
   },
   scrollViewPlanetPage: {
+    marginTop: 35,
+    width: "95%",
   },
   planet: {
+    marginTop: -30,
     borderRadius: 99999,
     width: 114,
     height: 114,
@@ -1245,15 +1244,18 @@ inactiveText: {
     elevation: 24,
   },
   sun_image: {
+    marginTop: -50,
     width: '100%',
     height: '150%',
 
   },
   planet_names: {
     width: '100%',
-    height: '10%',
+    height: '9%',
     textAlign: 'center',
-    color: 'white',
+    fontFamily: 'Montserrat-Bold',
+    color: 'white', 
+    fontSize: 12,
   },
 
   planet_rows: {
@@ -1311,7 +1313,6 @@ inactiveText: {
     height: '100%',
   },
   planetPage_rows: {
-    backgroundColor: 'navy',
     width: '100%',
     height: '33.34%',
     flexDirection: 'row',
@@ -1327,18 +1328,23 @@ inactiveText: {
 
   },
   solar_system_header: {
-    height: '8%',
+    marginTop: 30,
+    height: '10%',
     justifyContent: 'center',
   },
   my_solar_system_text: {
     color: Themes.synastry_styles.white,
+    // color: "#E49726",
     fontSize: '24',
     textAlign: 'center',
-    textShadowColor: 'rgba(255, 255, 255, 0.8)',
+    textShadowColor: 'rgba(228, 151, 38, 0.8)',
     textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 5,
+    textShadowRadius: 7,
+    fontSize: 40, 
+    fontFamily: 'PermanentMarker',
   },
   planets_visual: {
+    marginTop: 25,
     width: '100%',
     height: '50%',
   },
@@ -1421,7 +1427,6 @@ inactiveText: {
   },
 
   whatsHotHeaderPlanetPage: {
-    backgroundColor: 'navy',
     width: '100%',
     height: 200,
     display: 'flex',
@@ -1446,9 +1451,10 @@ inactiveText: {
     color: 'white',
   },
   whatsHotHeaderTextPlanetPage: {
-    fontSize: '24',
+    fontSize: '35',
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Norwester',
 
   },
   photos: {

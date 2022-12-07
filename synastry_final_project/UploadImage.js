@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 export default function UploadImage(props) {
     const [image, setImage] = useState(null);
 
+
     const addImage = async () => {
         let _image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
