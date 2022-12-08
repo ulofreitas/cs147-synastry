@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useReducer } from 'react';
 import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
 import { warmUpAsync } from "expo-web-browser";
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { WebView } from "react-native-webview";
 import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -28,8 +28,14 @@ import keri_image_5 from '../synastry_final_project/assets/keri/keri_image_5.jpe
 import keri_image_6 from '../synastry_final_project/assets/keri/keri_image_6.jpeg';
 import keri_planet from '../synastry_final_project/assets/keri/keri_planet.jpeg';
 import maurice_planet from '../synastry_final_project/assets/maurice_planet.jpeg';
-import default_avatar from '../synastry_final_project/assets/default_avatar.jpeg';
+import tomi_img from '../synastry_final_project/assets/tomi.jpeg';
 import SearchMasonry from './components/SearchMasonry';
+import { refresh } from 'react-native-app-auth';
+import PublicPrivateToggle from './PublicPrivateToggle';
+import UploadProfilePic from './components/UploadProfilePic';
+
+
+
 
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
@@ -37,7 +43,7 @@ const windowHeight = Dimensions.get('window').height;
 let User = {
   id: '1',
   name: "Tomi",
-  avatar: Image.resolveAssetSource(default_avatar).uri, 
+  avatar: Image.resolveAssetSource(tomi_img).uri, 
   phone_number: "",
   email: "",
   instagram: '',
@@ -292,18 +298,18 @@ export default function App() {
                 source={require('../synastry_final_project/assets/discover_planet.png')}>
               </Image>
             </Pressable>
-            <View style={{ width: '40%' }} />
+            <View style={{ width: '65%' }} />
             {/* This is the button used for creating  a planet */}
-            <Pressable style={styles.add_button} onPress={() => {
+            {/* <Pressable style={styles.add_button} onPress={() => {
               navigation.navigate('Profile');
             }}
-            >
+            > */}
               {/* This is the image used for creating  a planet */}
-              <Image
+              {/* <Image
                 style={styles.button_image}
                 source={require('../synastry_final_project/assets/create_planet_white.png')}>
               </Image>
-            </Pressable>
+            </Pressable> */}
           </View>
 
           {/* This is the sun button, it is a pressable*/}
@@ -381,31 +387,33 @@ export default function App() {
     return (
       
       <SafeAreaView style={styles.sunPageBackground}>
-        <Pressable
+        {/* <Pressable
           style={styles.resurfaceButton}
           onPress = {() => {
             navigation.navigate('Your Solar System');
           }}>
             <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
-        </Pressable>
+        </Pressable> */}
         {/* This section handles the what's hot area, the text is the label, and the TextInput is
       to allow you to change what's shown -- make sure to populate this into a dict so changes
       persist*/}
-
+            <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
+                  <Ionicons style={[{marginRight: 35}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
+                  <View style={[{width: "60%", justifyContext: 'center', alignItems: 'center'}]}>
+                  <PublicPrivateToggle buttons={['private', 'public']}/> 
+                  </View>
+                    <Pressable  onPress = {() => {
+              navigation.navigate('Profile');
+            }}>
+                    <FontAwesome5 style={[{marginLeft: 35}]} name="user-edit" size={32} color={Themes.synastry_styles.resurface_button}/>
+                  </Pressable>
+                </View>
         <View style={styles.whatsHotHeader}>
-          <Text style={styles.whatsHotHeaderText}>
-            What's hot?
+          <Text style={[styles.whatsHotHeaderText, {fontFamily: 'Norwester', color: '#86720C', fontSize:30}]}>
+            My Current {'\n'} Health Definition
           </Text>
           {/*TODO POPULATE THIS INTO A DICTIONARY */}
-          <TextInput
-            style={styles.whatsHot_textbox}
-            placeholder={" I'm feeling...   "}
-            placeholderTextColor="#949494" 
-            defaultValue={global_whats_hot}
-            onChangeText={newText => setWhatsHot(newText)}    // uses the setText function and returns text, the updates input
-            onEndEditing={() => setGlobalWhatsHot(whats_hot)}
-            //value={whats_hot}  // text is the updated input --> store this in a dictionary and ensure change persists
-            />
+          
         </View>
 
         <ScrollView style={styles.scrollView}>
@@ -418,8 +426,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder="An important person on your health journey"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_0}
                     onChangeText={newText => setPolaroid0Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid0Caption(caption_0)}
@@ -436,8 +444,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder="A favorite cultural food"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_1}
                     onChangeText={newText => setPolaroid1Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid1Caption(caption_1)}
@@ -458,8 +466,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder=" A goal you're working towards"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_2}
                     onChangeText={newText => setPolaroid2Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid2Caption(caption_2)}
@@ -476,8 +484,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder="Biggest health misconception"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_3}
                     onChangeText={newText => setPolaroid3Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid3Caption(caption_3)}
@@ -498,8 +506,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder="Something you wish you knew a year ago"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_4}
                     onChangeText={newText => setPolaroid4Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid4Caption(caption_4)}
@@ -516,8 +524,8 @@ export default function App() {
                 <View style={styles.polaroid_text_box}>
                   <TextInput
                     style={styles.polaroid_text_input}
-                    placeholder=" Write your caption here..."
-                    placeholderTextColor = 'black'
+                    placeholder="Something you're glad you know now"
+                    placeholderTextColor = '#BFBEBE'
                     defaultValue={global_caption_5}
                     onChangeText={newText => setPolaroid5Caption(newText)}
                     onEndEditing={() => setGlobalPolaroid5Caption(caption_5)}
@@ -785,15 +793,18 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
   };
 
   const Profile = ({navigation}) => {
-    let [image, setImage] = useState(null);
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const [text, onChangeText] = useState(null);
     const [number, onChangeNumber] = useState(null);
+    const [email, onChangeEmail] = useState(null);
+    const [insta, onChangeInsta] = useState(null);
 
     // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
     const getImageFromUploader = (image_data) => {
       console.log("getImageFromUploader");
       console.log(image_data);
-      setImage(image_data);
+      User.avatar = image_data;
+      forceUpdate();
     }
 
     return (
@@ -814,7 +825,24 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                     
                   <View style={{ marginTop: 38, alignItems: "center" }}>
                     <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
-                      <UploadImage passImage={getImageFromUploader} />
+
+                    <View style={{ marginTop: 14, alignItems: "center" }}>
+                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
+                        <Image
+                            source={
+                                { uri: User.avatar }
+                            }
+                            style={[{width: 136, height: 136, borderRadius: 68}]}
+                        />
+                    </View>
+                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+                </View>
+
+
+
+
+
+                      {/* <UploadProfilePic passImage={getImageFromUploader} image={User.avatar} /> */}
                       <View style={{ marginTop: 25, alignItems: "center" }}>
                           <Text style={{ fontSize: 50, fontFamily: 'Norwester', color: 'white' }}>{User.name}</Text>
                           </View>
@@ -828,11 +856,11 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                                 </Text>    
                         </View>
                         <TextInput
-                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
                             onChangeText={onChangeText}
                             value={text}
                             placeholderTextColor="#BFBEBE"
-                            placeholder="Bio"
+                            placeholder="Hashtags (private; used in search algorithm)"
                           />
                       </View>
 
@@ -848,23 +876,23 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                                 </Text>    
                         </View>
                         <TextInput
-                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
                             onChangeText={onChangeNumber}
                             value={number}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Phone Number"
                           />
                                                   <TextInput
-                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeNumber}
-                            value={number}
+                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeEmail}
+                            value={email}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Email"
                           />
                                                   <TextInput
-                            style={[{ width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeNumber}
-                            value={number}
+                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            onChangeText={onChangeInsta}
+                            value={insta}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Instagram"
                           />
@@ -928,16 +956,19 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                 <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
             </Pressable>
             <View style={styles.search_for_planet_text}>
-                <Text style={styles.search_for_planet_text_content}>
-                  Search for a planet to visit!
+                <Text style={[styles.my_solar_system_text, {fontSize: 30}]}>
+                  Discover Health Journeys!
                 </Text>
             </View>
           </View>
           <View style={styles.search_bottom_third}>
+
+            
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
               <TextInput
-                style={styles.search_textbox}
-                placeholder=" Tell us what you're looking for...   "
+                style={[styles.search_textbox, {backgroundColor: '#BFBEBE', color:"navy"}]}
+                placeholder="Search "
+                placeholderTextColor={"white"}
                 onChangeText={text => searchText(text)}
                 value={searched}
                 />
@@ -1016,7 +1047,7 @@ const styles = StyleSheet.create({
   },
   // Search for/visit planet styling
   search_container: {
-    backgroundColor: 'navy',
+    backgroundColor: '#0F0B4D',
     justifyContent: "front",
     alignItems: "center",
     height: '100%',
@@ -1151,7 +1182,7 @@ inactiveText: {
   planet_to_visit_preview: {
     height: '70%',
     width: '80%',
-    backgroundColor: '#00009b',
+    backgroundColor: '#504B8D',
     borderRadius: 10,
     justifyContent: 'center',
   },
@@ -1171,7 +1202,7 @@ inactiveText: {
   search_tip: {
     height: '10%',
     width: '80%',
-    backgroundColor: '#faaea0',
+    backgroundColor: '#504B8D',
     borderRadius: 10,
     justifyContent: 'center'
   },
@@ -1225,7 +1256,7 @@ inactiveText: {
     borderRadius: 99999,
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -1283,7 +1314,7 @@ inactiveText: {
   },
   polaroid_photo: {
     backgroundColor: 'black',
-    width: '90%',
+    width: '85%',
     height: '70%',
     justifyContent: 'center',
     alignContent: 'center',
@@ -1341,7 +1372,7 @@ inactiveText: {
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 7,
     fontSize: 40, 
-    fontFamily: 'PermanentMarker',
+    fontFamily: 'Norwester',
   },
   planets_visual: {
     marginTop: 25,

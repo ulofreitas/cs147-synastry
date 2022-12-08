@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import black from './assets/black.png'
 
 // Code to pass image data up to parent components based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
 export default function UploadImage(props) {
@@ -22,7 +23,7 @@ export default function UploadImage(props) {
         if (!_image.canceled) {
             setImage(_image.uri);
             props.passImage(_image.uri);
-        }
+        } 
     };
 
 
@@ -32,15 +33,15 @@ export default function UploadImage(props) {
         <View style={imageUploaderStyles.container}>
         {
             // props.image && !image && <Image source={{ uri: props.image }} style={{ width: 200, height: 200 }} />
-            props.image && !image && <Image source={{ uri: props.image }} style={{ width: '100%', height: '100%' }} />
+            props.image && !image && <Image key={Date.now()}  source={{ uri: props.image }} style={{ width: '100%', height: '100%' }} />
         }
         {
             // !props.image && image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-            !props.image && image && <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
+            !props.image && image && <Image key={Date.now()} source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
         }
             <View style={imageUploaderStyles.uploadBtnContainer}>
                 <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn} >
-                    <Text>{image ? 'Edit' : 'Upload'} Image</Text>
+                    <Text>{image ? 'Edit' : 'Upload'}</Text>
                     <AntDesign name="camera" size={20} color="black" />
                 </TouchableOpacity>
             </View>
@@ -54,7 +55,7 @@ const imageUploaderStyles = StyleSheet.create({
         width: 150,
         backgroundColor: '#efefef',
         position: 'relative',
-        borderRadius: 999,
+        // borderRadius: 999,
         overflow: 'hidden',
     },
     uploadBtnContainer: {

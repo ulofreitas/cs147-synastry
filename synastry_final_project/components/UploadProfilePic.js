@@ -4,12 +4,13 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import default_avatar from '../synastry_final_project/assets/default_avatar.jpeg';
 import * as ImagePicker from 'expo-image-picker';
+import default_avatar from '../assets/default_avatar.jpeg'
 
 // Code to pass image data up to parent components based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
 export default function UploadProfilePic(props) {
-    const [image, setImage] = useState(Image.resolveAssetSource(default_avatar));
+    const [image, setImage] = useState(Image.resolveAssetSource(default_avatar).uri);
+
 
     const addImage = async () => {
         let _image = await ImagePicker.launchImageLibraryAsync({
@@ -40,7 +41,7 @@ export default function UploadProfilePic(props) {
         }
             <View style={imageUploaderStyles.uploadBtnContainer}>
                 <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn} >
-                    <Text>{image ? 'Edit' : 'Upload'} Image</Text>
+                    <Text>{'Upload'}</Text>
                     <AntDesign name="camera" size={20} color="black" />
                 </TouchableOpacity>
             </View>
