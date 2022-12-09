@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react';
-import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
@@ -19,7 +19,7 @@ import discoverPlanet from '../synastry_final_project/assets/discover_planet.png
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Modal from "react-native-modal";
-import { KERIPOSTS } from './data';
+import { KERIPOSTS, MAURICEPOSTS} from './data';
 import keri_image_1 from '../synastry_final_project/assets/keri/keri_image_1.jpeg';
 import keri_image_2 from '../synastry_final_project/assets/keri/keri_image_2.jpeg';
 import keri_image_3 from '../synastry_final_project/assets/keri/keri_image_3.jpeg';
@@ -27,12 +27,17 @@ import keri_image_4 from '../synastry_final_project/assets/keri/keri_image_4.jpe
 import keri_image_5 from '../synastry_final_project/assets/keri/keri_image_5.jpeg';
 import keri_image_6 from '../synastry_final_project/assets/keri/keri_image_6.jpeg';
 import keri_planet from '../synastry_final_project/assets/keri/keri_planet.jpeg';
+import india_planet from '../synastry_final_project/assets/india/india.jpeg';
 import maurice_planet from '../synastry_final_project/assets/maurice_planet.jpeg';
+import alison from '../synastry_final_project/assets/alison.jpeg';
+import esteban from '../synastry_final_project/assets/esteban.jpeg';
+import tyler from '../synastry_final_project/assets/tyler.jpeg';
 import tomi_img from '../synastry_final_project/assets/tomi.jpeg';
 import SearchMasonry from './components/SearchMasonry';
 import { refresh } from 'react-native-app-auth';
 import PublicPrivateToggle from './PublicPrivateToggle';
 import UploadProfilePic from './components/UploadProfilePic';
+import * as ImagePicker from 'expo-image-picker';
 
 
 
@@ -40,15 +45,22 @@ import UploadProfilePic from './components/UploadProfilePic';
 const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const PostPrompts = ["An important person on your health journey?", "A favorite cultural food?", "A health goal you're working towards",
+"Biggest health misconception",
+"Something you wish you knew a year ago about your health journey",
+"Something you're glad you know now about your health", ]
 let User = {
   id: '1',
-  name: "Tomi",
-  avatar: Image.resolveAssetSource(tomi_img).uri, 
-  phone_number: "",
-  email: "",
-  instagram: '',
-  tags: []
+  name: null,
+  avatar: null, 
+  phone_number: null,
+  email: null,
+  instagram: null,
+  tags: null
 }
+let UserPosts = [
+]
+let POSTS = [];
 const PopulatedPlanetData = [
   {
     id: '1',
@@ -76,54 +88,54 @@ const PopulatedPlanetData = [
   },
   {
     id: '3',
-    person: 'Inda',
-    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
-    title: 'Keri\'s Planet',
-    img: Image.resolveAssetSource(keri_planet).uri,
-    phone_number: '(347)-981-8123',
-    email: 'kerij@gmail.com',
-    instagram: '@kerij',
+    person: 'India',
+    profile: '../synastry_final_project/assets/india/india.jpeg',
+    title: 'India\'s Planet',
+    img: Image.resolveAssetSource(india_planet).uri,
+    phone_number: '(789)-331-8652',
+    email: 'indiahill@gmail.com',
+    instagram: '@indiamichelle',
     tags: [
-      'nigerian', 'woman', 'pcos', 'girl'
+      'american', 'pcos', 'endometriosis', 'fun', 'laughter'
     ],
   },
   {
     id: '4',
-    person: 'Arjun',
-    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
-    title: 'Keri\'s Planet',
-    img: Image.resolveAssetSource(keri_planet).uri,
-    phone_number: '(347)-981-8123',
-    email: 'kerij@gmail.com',
-    instagram: '@kerij',
+    person: 'Esteban',
+    profile: '../synastry_final_project/assets/esteban.jpeg',
+    title: 'Esteban\'s Planet',
+    img: Image.resolveAssetSource(esteban).uri,
+    phone_number: '(376)-381-2323',
+    email: 'estebanss@gmail.com',
+    instagram: '@estebanss',
     tags: [
-      'nigerian', 'woman', 'pcos', 'girl'
+      'hispanic', 'latino', 'mexicano', 'chicano', 'man', 'gay', 'spirtuality', 'mindfulness', 'lgbtq'
     ],
   },
   {
     id: '5',
     person: 'Alison',
-    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
-    title: 'Keri\'s Planet',
-    img: Image.resolveAssetSource(keri_planet).uri,
-    phone_number: '(347)-981-8123',
-    email: 'kerij@gmail.com',
-    instagram: '@kerij',
+    profile: '../synastry_final_project/assets/alison.jpeg',
+    title: 'Alison\'s Planet',
+    img: Image.resolveAssetSource(alison).uri,
+    phone_number: '(497)-999-1212',
+    email: 'allybui@gmail.com',
+    instagram: '@allyb',
     tags: [
-      'nigerian', 'woman', 'pcos', 'girl'
+      'asian', 'woman', 'weight gain', 'girl', 'motivated', 'family', 'friends'
     ],
   },
   {
     id: '6',
     person: 'Tyler',
-    profile: '../synastry_final_project/assets/keri/keri_planet.jpeg',
-    title: 'Keri\'s Planet',
-    img: Image.resolveAssetSource(keri_planet).uri,
-    phone_number: '(347)-981-8123',
-    email: 'kerij@gmail.com',
-    instagram: '@kerij',
+    profile: '../synastry_final_project/assets/tyler.jpeg',
+    title: 'Tyler\'s Planet',
+    img: Image.resolveAssetSource(tyler).uri,
+    phone_number: '(787)-332-3209',
+    email: 'tyleredwards@gmail.com',
+    instagram: '@tytyty24',
     tags: [
-      'nigerian', 'woman', 'pcos', 'girl'
+      'white', 'man', 'athlete', 'fun', 'friends', 'soccer', 'football', 'art', 'drawing'
     ],
   },
 ];
@@ -199,7 +211,7 @@ export default function App() {
 
 
   // two functions that update text / searched values --> This is used for the TextInput functionality  
-  let [fontsLoaded] = useFonts({
+  const [loaded] = useFonts({
     'Buffalo': require('./assets/fonts/Buffalo.otf'),
     'Norwester': require('./assets/fonts/Norwester.otf'),
     'CodePro': require('./assets/fonts/CodePro.otf'),
@@ -208,20 +220,39 @@ export default function App() {
     'PermanentMarker': require('./assets/fonts/PermanentMarker-Regular.ttf')
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  if (!loaded) {
+    return null;
+  }
 
-  let [text, setText] = useState('');
-  let [global_whats_hot, setGlobalWhatsHot] = useState('');
-  let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
-  let [global_caption_1, setGlobalPolaroid1Caption] = useState('');
-  let [global_caption_2, setGlobalPolaroid2Caption] = useState('');
-  let [global_caption_3, setGlobalPolaroid3Caption] = useState('');
-  let [global_caption_4, setGlobalPolaroid4Caption] = useState('');
-  let [global_caption_5, setGlobalPolaroid5Caption] = useState('');
+
+  // let fontsBro = null; 
+  // const loadingFonts = async () => {
+  //   let [fontsLoaded] = await useFonts({
+  //   'Buffalo': require('./assets/fonts/Buffalo.otf'),
+  //   'Norwester': require('./assets/fonts/Norwester.otf'),
+  //   'CodePro': require('./assets/fonts/CodePro.otf'),
+  //   'Montserrat': require('./assets/fonts/Montserrat.ttf'),
+  //   'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+  //   'PermanentMarker': require('./assets/fonts/PermanentMarker-Regular.ttf')
+  //   });
+  //   fontsBro = fontsLoaded;
+  // }
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   loadingFonts;
+  //   if (fontsBro) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [fontsBro]);
+
+  // let [text, setText] = useState('');
+  // let [global_whats_hot, setGlobalWhatsHot] = useState('');
+  // let [global_caption_0, setGlobalPolaroid0Caption] = useState('');
+  // let [global_caption_1, setGlobalPolaroid1Caption] = useState('');
+  // let [global_caption_2, setGlobalPolaroid2Caption] = useState('');
+  // let [global_caption_3, setGlobalPolaroid3Caption] = useState('');
+  // let [global_caption_4, setGlobalPolaroid4Caption] = useState('');
+  // let [global_caption_5, setGlobalPolaroid5Caption] = useState('');
 
 
   // Function that renders each planet in the dictionary
@@ -331,47 +362,28 @@ export default function App() {
     )
   }
 
-  function SunPage({ navigation }) {
-    let [whats_hot, setWhatsHot] = useState('');
-    let [count, setCount] = useState(0);
-    let [caption_0, setPolaroid0Caption] = useState('');
-    let [caption_1, setPolaroid1Caption] = useState('');
-    let [caption_2, setPolaroid2Caption] = useState('');
-    let [caption_3, setPolaroid3Caption] = useState('');
-    let [caption_4, setPolaroid4Caption] = useState('');
-    let [caption_5, setPolaroid5Caption] = useState('');
+  const  SunPage = ({navigation}) => {
+    let initialVisibility = POSTS.length === 0 ? false : true;
+    let [visible, setVisible] = useState(initialVisibility);
+
+    console.log("Hi this is posts");
+    console.log(POSTS);
     
-    // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
-    // Can clean this up later if necessary, but for now it's just a hard-coded fn for each Polaroid
-    const getImageFromUploader0 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[0].image = image_data;
-      console.log(image_data);
+    const handleClick = () => {
+      if (visible) {
+        setVisible(false);
+      } else {
+        setVisible(true);
+      } 
+      navigation.navigate("Make a Post");
     }
-    const getImageFromUploader1 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[1].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader2 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[2].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader3 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[3].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader4 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[4].image = image_data;
-      console.log(image_data);
-    }
-    const getImageFromUploader5 = (image_data) => {
-      console.log("getImageFromUploader");
-      Polaroids[5].image = image_data;
-      console.log(image_data);
+
+    const EmptyMessageVisible = () => {
+      if (POSTS.length !== 0) {
+        return null
+      }
+    
+      return <View style={[{height: '25%', alignItems: 'center', justifyContent: 'center',}]}><Text style={[{    textAlign: 'center', fontFamily: 'Montserrat-Bold', fontSize: 16, color: "#B89D1D"}]}> No posts here. {'\n'}Click the plus to get started.</Text></View>
     }
 
     /*useEffect(() => {
@@ -387,6 +399,7 @@ export default function App() {
     return (
       
       <SafeAreaView style={styles.sunPageBackground}>
+        <View style={[{height: '100%', width: '100%'}]}>
         {/* <Pressable
           style={styles.resurfaceButton}
           onPress = {() => {
@@ -409,14 +422,46 @@ export default function App() {
                   </Pressable>
                 </View>
         <View style={styles.whatsHotHeader}>
-          <Text style={[styles.whatsHotHeaderText, {fontFamily: 'Norwester', color: '#86720C', fontSize:30}]}>
-            My Current {'\n'} Health Definition
+        <View style={[{marginTop: 40}]}>
+        <Text style={[{fontFamily: 'Buffalo', color: '#B89D1D', fontSize:20}]}>
+            the journey begins...
           </Text>
+          </View>
+          <View style={[{marginTop: 8}]}>
+            <Text style={[styles.whatsHotHeaderText, {fontFamily: 'Norwester', color: '#86720C', fontSize:33}]}>
+              My Current {'\n'} Health Definition
+            </Text>
+          </View>
           {/*TODO POPULATE THIS INTO A DICTIONARY */}
           
         </View>
+            <View
+              style={{
+                height: 25,
+                borderBottomColor: 'white',
+                borderBottomWidth: 5,
+                marginBottom: 40,
+                marginTop: 60,
+              }}
+            >
 
-        <ScrollView style={styles.scrollView}>
+            </View>
+            <View>
+            <TouchableOpacity 
+                                onPress ={handleClick}
+                                style={[{}]}>
+            <Image
+                style={[{marginLeft: 170, marginTop: -70, height: 55, width: 55, zIndex: 100}]}
+                source={require('../synastry_final_project/assets/add.png')}>
+            </Image>
+            </TouchableOpacity>
+            </View>
+            <EmptyMessageVisible/>
+            <ScrollView>
+            <SearchMasonry key="boy" list={POSTS} />
+            </ScrollView>
+
+        {/* <ScrollView style={styles.scrollView}>
           <View style={styles.photos}>
             <View style={styles.sunScreen_rows}>
               <View style={styles.sunScreen_col}>
@@ -537,10 +582,116 @@ export default function App() {
             </View>
 
           </View>
-        </ScrollView>
-
+        </ScrollView> */}
+        </View>
       </SafeAreaView>
     )
+  }
+
+
+  function MakePost({ navigation }) {
+    let [clickedIdPost, setClickedIdPost] = useState(false);
+    let [clickedIdCancel, setClickedIdCancel] = useState(false);
+    let [text, setText] = useState("");
+    let [image, setImage] = useState(null);
+
+    let final = { image: null, caption: null};
+
+    // CODE FROM https://www.youtube.com/watch?v=65yUFbVyfBA
+    const pickImage = async () => {
+      let _result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3]
+      });
+
+      if (!_result.cancelled) {
+          setImage(_result.uri);
+          final.image = {uri: image};
+          console.log(final);
+      }
+    }
+    
+    const cancelPost = () => {
+      setClickedIdCancel(true);
+      navigation.navigate('Your Personal Space');
+    }
+    const makingPost = () => {
+      final.caption = text.text;
+      final.image = {uri: image}
+      if (final.image.uri === null || final.caption === "" || final.caption === null) {
+        Alert.alert("Please add an image and a caption!")
+        // alert please add image or caption and returrn
+      } else {
+      console.log(final);
+      setClickedIdPost(true);
+      UserPosts.push(final);
+      POSTS.push({image: final.image, caption: final.caption, id: Math.random().toString()})
+      // POSTS = UserPosts.map(item => ({
+      //   ...item,
+      //   id: Math.random().toString(),
+      // }));
+      console.log(POSTS);
+      navigation.navigate('Your Solar System');
+      }
+    }
+
+   
+    let index = Math.floor(Math.random() * PostPrompts.length); // random index
+    let magic_prompt = PostPrompts[index];
+    return (
+      // CODE FROM https://www.youtube.com/watch?v=65yUFbVyfBA
+      <SafeAreaView style={[{ flex: 1, backgroundColor: Themes.synastry_styles.yellow_sun}]}>
+      <View style={[{flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 32, paddingVertical: 18, borderBottomWidth: 2, borderBottomColor: "#86720C"}]}>
+          <TouchableOpacity onPress={() => navigation.navigate('Your Personal Space')}>
+              <Ionicons name="chevron-back" size={24} color={"#86720C"}></Ionicons>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={makingPost} style = {[clickedIdPost ? [styles.activeButton, , {backgroundColor: "#86720C", borderColor: "#86720C"}] : [styles.inactiveButton], { width: 90, marginTop: -10,}]}>
+            <Text style={clickedIdPost? [styles.activeText] : [styles.inactiveText, {color: "#86720C"}]}>Post</Text>
+          </TouchableOpacity>
+      </View>
+
+      <View style={[{
+        margin: 32,
+        flexDirection: "row"
+    }]}>
+          <Image source={
+                              User.avatar
+                              ? { uri: User.avatar }
+                              : require("./assets/default_avatar.png")
+                            } style={[{width: 48, height: 48, borderRadius: 24, marginRight: 16}]}></Image>
+
+
+
+          <TextInput
+              autoFocus={true}
+              multiline={true}
+              numberOfLines={2}
+              maxLength={50}
+              style={{ flex: 1 }}
+              placeholder={magic_prompt}
+              onChangeText={text => setText({ text })}
+              value={text}
+              color="#5D4F08"
+          ></TextInput>
+      </View>
+
+      <TouchableOpacity style={[{
+        alignItems: "flex-end",
+        marginHorizontal: 32
+    }]} onPress={pickImage}>
+          <Ionicons name="md-camera" size={32} color="#86720C"></Ionicons>
+      </TouchableOpacity>
+
+      <View style={[{ marginHorizontal: 32, marginTop: 32, height: 320, width: 320}]}>
+        {
+            // !props.image && image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            image && image && <Image key={Date.now()} source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
+        }
+          <Image source={{uri: final.image}} style={{ width: "100%", height: "100%"}}></Image>
+      </View>
+  </SafeAreaView>
+    ) 
   }
 
 
@@ -681,15 +832,15 @@ export default function App() {
     const contactText = solar_system.person + '\'s Contact';
     
     let posts;
-    switch (solar_system.name) {
+    switch (solar_system.person) {
       case 'Maurice':
-        posts = KERIPOSTS;
+        posts = MAURICEPOSTS;
         break;
       case 'Keri':
         posts = KERIPOSTS;
         break;
       default:
-        posts = KERIPOSTS;
+        posts = MAURICEPOSTS;
     }
 
     //const profileImg = require(solar_system.img);
@@ -793,18 +944,52 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
   };
 
   const Profile = ({navigation}) => {
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-    const [text, onChangeText] = useState(null);
-    const [number, onChangeNumber] = useState(null);
-    const [email, onChangeEmail] = useState(null);
-    const [insta, onChangeInsta] = useState(null);
+    const [avatar, onChangeAvatar] = useState(User.avatar)
+    const [name, onChangeName] = useState(User.name)
+    const [tags, onChangeTags] = useState(User.tags);
+    const [number, onChangeNumber] = useState(User.number);
+    const [email, onChangeEmail] = useState(User.email);
+    const [insta, onChangeInsta] = useState(User.instagram);
 
     // Code to get image data from UploadImage child component based off of https://javascript.plainenglish.io/how-to-pass-props-from-child-to-parent-component-in-react-d90752ff4d01
-    const getImageFromUploader = (image_data) => {
-      console.log("getImageFromUploader");
-      console.log(image_data);
-      User.avatar = image_data;
-      forceUpdate();
+    const handleNumberChange = (curr) => {
+      onChangeNumber(curr);
+      User.number = curr;
+    }
+
+    const handleEmailChange = (curr) => {
+      onChangeEmail(curr);
+      User.email = curr;
+    }
+
+    const handleInstaChange = (curr) => {
+      onChangeInsta(curr);
+      User.instagram = curr;
+    }
+
+    const handleNameChange = (curr) => {
+      onChangeName(curr);
+      User.name = curr;
+    }
+
+    const handleTagsChange = (curr) => {
+      onChangeTags(curr);
+      User.tags = curr;
+    }
+
+    const pickImage = async () => {
+      let _result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3]
+      });
+  
+      if (!_result.cancelled) {
+          onChangeAvatar(_result.uri);
+          User.avatar = _result.uri;
+          console.log(User);
+          navigation.navigate("Your Personal Space");
+      }
     }
 
     return (
@@ -828,12 +1013,17 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
                     <View style={{ marginTop: 14, alignItems: "center" }}>
                     <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
+                    <Pressable
+                      onPress = {pickImage}>
                         <Image
                             source={
-                                { uri: User.avatar }
+                              User.avatar
+                              ? { uri: User.avatar }
+                              : require("./assets/default_avatar_edit.png")
                             }
                             style={[{width: 136, height: 136, borderRadius: 68}]}
                         />
+                        </Pressable>
                     </View>
                     {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
                 </View>
@@ -844,7 +1034,14 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
                       {/* <UploadProfilePic passImage={getImageFromUploader} image={User.avatar} /> */}
                       <View style={{ marginTop: 25, alignItems: "center" }}>
-                          <Text style={{ fontSize: 50, fontFamily: 'Norwester', color: 'white' }}>{User.name}</Text>
+                          <TextInput
+                            style={[{ color: 'white', width: 332, height: 60, margin: 12, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth: 3,}]}
+                            fontSize={50}
+                            onChangeText={handleNameChange}
+                            value={name}
+                            placeholder="Name"
+                            placeholderTextColor="#BFBEBE"
+                          />
                           </View>
                     </View>
                     <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12}}>
@@ -857,8 +1054,8 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                         </View>
                         <TextInput
                             style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeText}
-                            value={text}
+                            onChangeText={handleTagsChange}
+                            value={tags}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Hashtags (private; used in search algorithm)"
                           />
@@ -877,21 +1074,21 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
                         </View>
                         <TextInput
                             style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeNumber}
+                            onChangeText={handleNumberChange}
                             value={number}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Phone Number"
                           />
                                                   <TextInput
                             style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeEmail}
+                            onChangeText={handleEmailChange}
                             value={email}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Email"
                           />
                                                   <TextInput
                             style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={onChangeInsta}
+                            onChangeText={handleInstaChange}
                             value={insta}
                             placeholderTextColor="#BFBEBE"
                             placeholder="Instagram"
@@ -1017,6 +1214,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
         <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
         <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
         <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}} />
+        <Stack.Screen name="Make a Post" component={MakePost} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -1236,11 +1434,11 @@ inactiveText: {
     paddingTop: 10,
     color: '#b0b3b8',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   scrollView: {
-    height: '85%'
+    height: '85%',
   },
   scrollViewPlanetPage: {
     marginTop: 35,
@@ -1408,6 +1606,8 @@ inactiveText: {
   },
   sunPageBackground: {
     backgroundColor: Themes.synastry_styles.yellow_sun,
+    hieght: '100%',
+    width: '100%',
   },
   whatsHot: {
     // backgroundColor: '#FFD700',
