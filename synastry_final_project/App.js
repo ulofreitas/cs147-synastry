@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react';
-import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
+import { TouchableOpacity, StyleSheet, Button, Image, SafeAreaView, Text, View, Pressable, FlatList, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 import { Themes, Images } from "./assets/Themes";
 import { ImageBackground } from "react-native";
 import { C } from "caniuse-lite/data/agents";
@@ -19,7 +19,7 @@ import discoverPlanet from '../synastry_final_project/assets/discover_planet.png
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Modal from "react-native-modal";
-import { KERIPOSTS, MAURICEPOSTS} from './data';
+import { KERIPOSTS, MAURICEPOSTS } from './data';
 import keri_image_1 from '../synastry_final_project/assets/keri/keri_image_1.jpeg';
 import keri_image_2 from '../synastry_final_project/assets/keri/keri_image_2.jpeg';
 import keri_image_3 from '../synastry_final_project/assets/keri/keri_image_3.jpeg';
@@ -46,13 +46,13 @@ const Stack = createStackNavigator();
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const PostPrompts = ["An important person on your health journey?", "A favorite cultural food?", "A health goal you're working towards",
-"Biggest health misconception",
-"Something you wish you knew a year ago about your health journey",
-"Something you're glad you know now about your health", ]
+  "Biggest health misconception",
+  "Something you wish you knew a year ago about your health journey",
+  "Something you're glad you know now about your health",]
 let User = {
   id: '1',
   name: null,
-  avatar: null, 
+  avatar: null,
   phone_number: null,
   email: null,
   instagram: null,
@@ -165,17 +165,18 @@ const PopulatedPlanetData = [
 // find a way to exclude first element of list when redering, and make sure to update ID of added to length 
 // of Solar System Data + 1
 let SolarSystemData = [
-{ id: '',
-  person: '',
-  profile: '',
-  title: '',
-  img: '',
-  phone_number: '',
-  email: '',
-  instagram: '',
-  tags: [
-  ],
-},
+  {
+    id: '',
+    person: '',
+    profile: '',
+    title: '',
+    img: '',
+    phone_number: '',
+    email: '',
+    instagram: '',
+    tags: [
+    ],
+  },
 ];
 
 const Polaroids = [
@@ -312,7 +313,7 @@ export default function App() {
                 renderItem={({ item }) => renderItem(item, navigation)}
                 keyExtractor={item => item.id}
                 numColumns={3}
-                ItemSeparatorComponent={() => <View style={{height: 15}} />}
+                ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
               />
             </View>
           }
@@ -335,8 +336,8 @@ export default function App() {
               navigation.navigate('Profile');
             }}
             > */}
-              {/* This is the image used for creating  a planet */}
-              {/* <Image
+            {/* This is the image used for creating  a planet */}
+            {/* <Image
                 style={styles.button_image}
                 source={require('../synastry_final_project/assets/create_planet_white.png')}>
               </Image>
@@ -362,19 +363,19 @@ export default function App() {
     )
   }
 
-  const  SunPage = ({navigation}) => {
+  const SunPage = ({ navigation }) => {
     let initialVisibility = POSTS.length === 0 ? false : true;
     let [visible, setVisible] = useState(initialVisibility);
 
     console.log("Hi this is posts");
     console.log(POSTS);
-    
+
     const handleClick = () => {
       if (visible) {
         setVisible(false);
       } else {
         setVisible(true);
-      } 
+      }
       navigation.navigate("Make a Post");
     }
 
@@ -382,8 +383,8 @@ export default function App() {
       if (POSTS.length !== 0) {
         return null
       }
-    
-      return <View style={[{height: '25%', alignItems: 'center', justifyContent: 'center',}]}><Text style={[{    textAlign: 'center', fontFamily: 'Montserrat-Bold', fontSize: 16, color: "#B89D1D"}]}> No posts here. {'\n'}Click the plus to get started.</Text></View>
+
+      return <View style={[{ height: '25%', alignItems: 'center', justifyContent: 'center', }]}><Text style={[{ textAlign: 'center', fontFamily: 'Montserrat-Bold', fontSize: 16, color: "#B89D1D" }]}> No posts here. {'\n'}Click the plus to get started.</Text></View>
     }
 
     /*useEffect(() => {
@@ -397,71 +398,71 @@ export default function App() {
     // TODO:
     // Populate info in your dictionary in order to make sure changes persist
     return (
-      
+
       <SafeAreaView style={styles.sunPageBackground}>
-        <View style={[{height: '100%', width: '100%'}]}>
-        {/* <Pressable
+        <View style={[{ height: '100%', width: '100%' }]}>
+          {/* <Pressable
           style={styles.resurfaceButton}
           onPress = {() => {
             navigation.navigate('Your Solar System');
           }}>
             <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
         </Pressable> */}
-        {/* This section handles the what's hot area, the text is the label, and the TextInput is
+          {/* This section handles the what's hot area, the text is the label, and the TextInput is
       to allow you to change what's shown -- make sure to populate this into a dict so changes
       persist*/}
-            <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
-                  <Ionicons style={[{marginRight: 35}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
-                  <View style={[{width: "60%", justifyContext: 'center', alignItems: 'center'}]}>
-                  <PublicPrivateToggle buttons={['private', 'public']}/> 
-                  </View>
-                    <Pressable  onPress = {() => {
+          <View style={[{ flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24 }]}>
+            <Ionicons style={[{ marginRight: 35 }]} name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack() }} />
+            <View style={[{ width: "60%", justifyContext: 'center', alignItems: 'center' }]}>
+              <PublicPrivateToggle buttons={['private', 'public']} />
+            </View>
+            <Pressable onPress={() => {
               navigation.navigate('Profile');
             }}>
-                    <FontAwesome5 style={[{marginLeft: 35}]} name="user-edit" size={32} color={Themes.synastry_styles.resurface_button}/>
-                  </Pressable>
-                </View>
-        <View style={styles.whatsHotHeader}>
-        <View style={[{marginTop: 40}]}>
-        <Text style={[{fontFamily: 'Buffalo', color: '#B89D1D', fontSize:20}]}>
-            the journey begins...
-          </Text>
+              <FontAwesome5 style={[{ marginLeft: 35 }]} name="user-edit" size={32} color={Themes.synastry_styles.resurface_button} />
+            </Pressable>
           </View>
-          <View style={[{marginTop: 8}]}>
-            <Text style={[styles.whatsHotHeaderText, {fontFamily: 'Norwester', color: '#86720C', fontSize:33}]}>
-              My Current {'\n'} Health Definition
-            </Text>
-          </View>
-          {/*TODO POPULATE THIS INTO A DICTIONARY */}
-          
-        </View>
-            <View
-              style={{
-                height: 25,
-                borderBottomColor: 'white',
-                borderBottomWidth: 5,
-                marginBottom: 40,
-                marginTop: 60,
-              }}
-            >
-
+          <View style={styles.whatsHotHeader}>
+            <View style={[{ marginTop: 40 }]}>
+              <Text style={[{ fontFamily: 'Buffalo', color: '#B89D1D', fontSize: 20 }]}>
+                the journey begins...
+              </Text>
             </View>
-            <View>
-            <TouchableOpacity 
-                                onPress ={handleClick}
-                                style={[{}]}>
-            <Image
-                style={[{marginLeft: 170, marginTop: -70, height: 55, width: 55, zIndex: 100}]}
+            <View style={[{ marginTop: 8 }]}>
+              <Text style={[styles.whatsHotHeaderText, { fontFamily: 'Norwester', color: '#86720C', fontSize: 33 }]}>
+                My Current {'\n'} Health Definition
+              </Text>
+            </View>
+            {/*TODO POPULATE THIS INTO A DICTIONARY */}
+
+          </View>
+          <View
+            style={{
+              height: 25,
+              borderBottomColor: 'white',
+              borderBottomWidth: 5,
+              marginBottom: 40,
+              marginTop: 60,
+            }}
+          >
+
+          </View>
+          <View>
+            <TouchableOpacity
+              onPress={handleClick}
+              style={[{}]}>
+              <Image
+                style={[{ marginLeft: 170, marginTop: -70, height: 55, width: 55, zIndex: 100 }]}
                 source={require('../synastry_final_project/assets/add.png')}>
-            </Image>
+              </Image>
             </TouchableOpacity>
-            </View>
-            <EmptyMessageVisible/>
-            <ScrollView>
+          </View>
+          <EmptyMessageVisible />
+          <ScrollView>
             <SearchMasonry key="boy" list={POSTS} />
-            </ScrollView>
+          </ScrollView>
 
-        {/* <ScrollView style={styles.scrollView}>
+          {/* <ScrollView style={styles.scrollView}>
           <View style={styles.photos}>
             <View style={styles.sunScreen_rows}>
               <View style={styles.sunScreen_col}>
@@ -595,103 +596,107 @@ export default function App() {
     let [text, setText] = useState("");
     let [image, setImage] = useState(null);
 
-    let final = { image: null, caption: null};
+    let final = { image: null, caption: null };
 
     // CODE FROM https://www.youtube.com/watch?v=65yUFbVyfBA
     const pickImage = async () => {
       let _result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3]
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3]
       });
 
       if (!_result.cancelled) {
-          setImage(_result.uri);
-          final.image = {uri: image};
-          console.log(final);
+        setImage(_result.uri);
+        final.image = { uri: image };
+        console.log(final);
       }
     }
-    
+
     const cancelPost = () => {
       setClickedIdCancel(true);
       navigation.navigate('Your Personal Space');
     }
     const makingPost = () => {
       final.caption = text.text;
-      final.image = {uri: image}
+      final.image = { uri: image }
       if (final.image.uri === null || final.caption === "" || final.caption === null) {
         Alert.alert("Please add an image and a caption!")
         // alert please add image or caption and returrn
       } else {
-      console.log(final);
-      setClickedIdPost(true);
-      UserPosts.push(final);
-      POSTS.push({image: final.image, caption: final.caption, id: Math.random().toString()})
-      // POSTS = UserPosts.map(item => ({
-      //   ...item,
-      //   id: Math.random().toString(),
-      // }));
-      console.log(POSTS);
-      navigation.navigate('Your Solar System');
+        console.log(final);
+        setClickedIdPost(true);
+        UserPosts.push(final);
+        POSTS.push({ image: final.image, caption: final.caption, id: Math.random().toString() })
+        // POSTS = UserPosts.map(item => ({
+        //   ...item,
+        //   id: Math.random().toString(),
+        // }));
+        console.log(POSTS);
+        //navigation.navigate('Your Solar System');
+        //navigation.navigate('Your Personal Space');
+        navigation.goBack();
+        navigation.goBack();
+        navigation.push('Your Personal Space');
       }
     }
 
-   
+
     let index = Math.floor(Math.random() * PostPrompts.length); // random index
     let magic_prompt = PostPrompts[index];
     return (
       // CODE FROM https://www.youtube.com/watch?v=65yUFbVyfBA
-      <SafeAreaView style={[{ flex: 1, backgroundColor: Themes.synastry_styles.yellow_sun}]}>
-      <View style={[{flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 32, paddingVertical: 18, borderBottomWidth: 2, borderBottomColor: "#86720C"}]}>
+      <SafeAreaView style={[{ flex: 1, backgroundColor: Themes.synastry_styles.yellow_sun }]}>
+        <View style={[{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 32, paddingVertical: 18, borderBottomWidth: 2, borderBottomColor: "#86720C" }]}>
           <TouchableOpacity onPress={() => navigation.navigate('Your Personal Space')}>
-              <Ionicons name="chevron-back" size={24} color={"#86720C"}></Ionicons>
+            <Ionicons name="chevron-back" size={24} color={"#86720C"}></Ionicons>
           </TouchableOpacity>
-          <TouchableOpacity onPress={makingPost} style = {[clickedIdPost ? [styles.activeButton, , {backgroundColor: "#86720C", borderColor: "#86720C"}] : [styles.inactiveButton], { width: 90, marginTop: -10,}]}>
-            <Text style={clickedIdPost? [styles.activeText] : [styles.inactiveText, {color: "#86720C"}]}>Post</Text>
+          <TouchableOpacity onPress={makingPost} style={[clickedIdPost ? [styles.activeButton, , { backgroundColor: "#86720C", borderColor: "#86720C" }] : [styles.inactiveButton], { width: 90, marginTop: -10, }]}>
+            <Text style={clickedIdPost ? [styles.activeText] : [styles.inactiveText, { color: "#86720C" }]}>Post</Text>
           </TouchableOpacity>
-      </View>
+        </View>
 
-      <View style={[{
-        margin: 32,
-        flexDirection: "row"
-    }]}>
+        <View style={[{
+          margin: 32,
+          flexDirection: "row"
+        }]}>
           <Image source={
-                              User.avatar
-                              ? { uri: User.avatar }
-                              : require("./assets/default_avatar.png")
-                            } style={[{width: 48, height: 48, borderRadius: 24, marginRight: 16}]}></Image>
+            User.avatar
+              ? { uri: User.avatar }
+              : require("./assets/default_avatar.png")
+          } style={[{ width: 48, height: 48, borderRadius: 24, marginRight: 16 }]}></Image>
 
 
 
           <TextInput
-              autoFocus={true}
-              multiline={true}
-              numberOfLines={2}
-              maxLength={50}
-              style={{ flex: 1 }}
-              placeholder={magic_prompt}
-              onChangeText={text => setText({ text })}
-              value={text}
-              color="#5D4F08"
+            autoFocus={true}
+            multiline={true}
+            numberOfLines={2}
+            maxLength={50}
+            style={{ flex: 1 }}
+            placeholder={magic_prompt}
+            onChangeText={text => setText({ text })}
+            value={text}
+            color="#5D4F08"
           ></TextInput>
-      </View>
+        </View>
 
-      <TouchableOpacity style={[{
-        alignItems: "flex-end",
-        marginHorizontal: 32
-    }]} onPress={pickImage}>
+        <TouchableOpacity style={[{
+          alignItems: "flex-end",
+          marginHorizontal: 32
+        }]} onPress={pickImage}>
           <Ionicons name="md-camera" size={32} color="#86720C"></Ionicons>
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      <View style={[{ marginHorizontal: 32, marginTop: 32, height: 320, width: 320}]}>
-        {
+        <View style={[{ marginHorizontal: 32, marginTop: 32, height: 320, width: 320 }]}>
+          {
             // !props.image && image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
             image && image && <Image key={Date.now()} source={{ uri: image }} style={{ width: '100%', height: '100%' }} />
-        }
-          <Image source={{uri: final.image}} style={{ width: "100%", height: "100%"}}></Image>
-      </View>
-  </SafeAreaView>
-    ) 
+          }
+          <Image source={{ uri: final.image }} style={{ width: "100%", height: "100%" }}></Image>
+        </View>
+      </SafeAreaView>
+    )
   }
 
 
@@ -735,10 +740,10 @@ export default function App() {
           source={require('../synastry_final_project/assets/stars.png')}>
           <Pressable
             style={styles.resurfaceButton}
-            onPress = {() => {
+            onPress={() => {
               navigation.navigate('Your Solar System');
             }}>
-              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+            <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button} />
           </Pressable>
           <View style={styles.create_planet_header}>
             <Text style={styles.create_planet_text}>
@@ -809,7 +814,7 @@ export default function App() {
     }
 
     const startButton = SolarSystemData.includes(solar_system);
-    const [clickedId, setClickedId ] = useState(startButton);
+    const [clickedId, setClickedId] = useState(startButton);
     const text2 = "Add Planet";
     const text1 = "Remove Planet";
 
@@ -827,10 +832,10 @@ export default function App() {
         SolarSystemData.push(solar_system);
         SolarSystemData = SolarSystemData.filter(removeDummy);
         setClickedId(true);
-      } 
+      }
     }
     const contactText = solar_system.person + '\'s Contact';
-    
+
     let posts;
     switch (solar_system.person) {
       case 'Maurice':
@@ -848,102 +853,102 @@ export default function App() {
 
     return (
       <SafeAreaView style={styles.container}>
-      <ImageBackground style={styles.stars_background}
+        <ImageBackground style={styles.stars_background}
           resizeMode='cover'
           source={require('../synastry_final_project/assets/PlanetBackground.png')}>
 
 
 
-            <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
-                  <Ionicons style={[{marginRight: 55}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
-                  <TouchableOpacity 
-                                onPress ={() => handleClick()}
-                                style={
-                                    clickedId ? styles.activeButton : styles.inactiveButton }>
-                            <Text
-                                style={clickedId ? styles.activeText: styles.inactiveText }>
-                                    {clickedId ? text1 : text2}
-                            </Text>    
-                    </TouchableOpacity>
-                    <Pressable onPress={toggleModal}>
-                    <MaterialCommunityIcons style={[{marginLeft: 55}]} name="contacts" size={32} color={Themes.synastry_styles.resurface_button}/>
-                  </Pressable>
-                </View>
+          <View style={[{ flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24 }]}>
+            <Ionicons style={[{ marginRight: 55 }]} name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack() }} />
+            <TouchableOpacity
+              onPress={() => handleClick()}
+              style={
+                clickedId ? styles.activeButton : styles.inactiveButton}>
+              <Text
+                style={clickedId ? styles.activeText : styles.inactiveText}>
+                {clickedId ? text1 : text2}
+              </Text>
+            </TouchableOpacity>
+            <Pressable onPress={toggleModal}>
+              <MaterialCommunityIcons style={[{ marginLeft: 55 }]} name="contacts" size={32} color={Themes.synastry_styles.resurface_button} />
+            </Pressable>
+          </View>
 
 
 
-        <ScrollView style={styles.scrollViewPlanetPage}>
+          <ScrollView style={styles.scrollViewPlanetPage}>
 
 
 
-          {/* This section handles the what's hot area, the text is the label, and the TextInput is
+            {/* This section handles the what's hot area, the text is the label, and the TextInput is
 to allow you to change what's shown -- make sure to populate this into a dict so changes
 persist*/}
 
-          <View style={styles.whatsHotHeaderPlanetPage}>
+            <View style={styles.whatsHotHeaderPlanetPage}>
 
 
               <Modal isVisible={isModalVisible}>
                 <View style={styles.ModalBox}>
                   <Text style={styles.ModalText}> {contactText} </Text>
-                  <Text style={{color:"gray"}}>
-                  Phone Number: {solar_system.phone_number}
+                  <Text style={{ color: "gray" }}>
+                    Phone Number: {solar_system.phone_number}
                   </Text>
-                  <Text style={{color:"gray"}}>
+                  <Text style={{ color: "gray" }}>
                     Email: {solar_system.email}
                   </Text>
-                  <Text style={{color:"gray"}}>
+                  <Text style={{ color: "gray" }}>
                     Instagram: {solar_system.instagram}
                   </Text>
                   <Pressable style={styles.ModalButtonBox} onPress={toggleModal}>
                     <Text style={styles.ModalButtonText}>Close</Text>
                   </Pressable>
                 </View>
-              </Modal>            
-              <View style={[{marginTop: 40, alignContent: 'center', justifyContent: 'center', alignItems: 'center'}]}>
-                <Text style={[{fontFamily: 'Buffalo', fontSize: 25, color: 'white'}]}> Welcome To </Text>
+              </Modal>
+              <View style={[{ marginTop: 40, alignContent: 'center', justifyContent: 'center', alignItems: 'center' }]}>
+                <Text style={[{ fontFamily: 'Buffalo', fontSize: 25, color: 'white' }]}> Welcome To </Text>
                 <Text style={styles.whatsHotHeaderTextPlanetPage}>
                   {solar_system.title}:
                 </Text>
 
-            </View>
-            <View style={{ marginTop: 14, alignItems: "center" }}>
-                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
-                        <Image
-                            source={
-                                { uri: solar_system.img }
-                            }
-                            style={[{width: 136, height: 136, borderRadius: 68}]}
-                        />
-                    </View>
-                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+              </View>
+              <View style={{ marginTop: 14, alignItems: "center" }}>
+                <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4 }]}>
+                  <Image
+                    source={
+                      { uri: solar_system.img }
+                    }
+                    style={[{ width: 136, height: 136, borderRadius: 68 }]}
+                  />
                 </View>
+                {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+              </View>
 
-            {/*TODO POPULATE THIS INTO A DICTIONARY */}
+              {/*TODO POPULATE THIS INTO A DICTIONARY */}
 
-          </View>
-          
-          <View style={{ marginTop: 55, alignItems: "center" }}>
-          <SearchMasonry key="all" list={posts} />
-          </View>
+            </View>
 
-          {/* This section defines three rows, each with two columns for pictures for people to upload
+            <View style={{ marginTop: 55, alignItems: "center" }}>
+              <SearchMasonry key="all" list={posts} />
+            </View>
+
+            {/* This section defines three rows, each with two columns for pictures for people to upload
 
 TODO:
 
 MAKE SURE THE CHANGES PERSIST --> THE UPLOAD IMAGE COMPONENT IS WHAT WORKS THE MAGIC, PLEASE FAMILIARIZE YOURSELF WITH THIS AND MAKE
 SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
-          
-          
 
-        </ScrollView>
+
+
+          </ScrollView>
         </ImageBackground>
       </SafeAreaView>
     )
 
   };
 
-  const Profile = ({navigation}) => {
+  const Profile = ({ navigation }) => {
     const [avatar, onChangeAvatar] = useState(User.avatar)
     const [name, onChangeName] = useState(User.name)
     const [tags, onChangeTags] = useState(User.tags);
@@ -979,131 +984,132 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
 
     const pickImage = async () => {
       let _result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3]
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3]
       });
-  
+
       if (!_result.cancelled) {
-          onChangeAvatar(_result.uri);
-          User.avatar = _result.uri;
-          console.log(User);
-          navigation.navigate("Your Personal Space");
+        onChangeAvatar(_result.uri);
+        User.avatar = _result.uri;
+        console.log(User);
+        //navigation.goBack();
+        //navigation.navigate("Profile");
       }
     }
 
     return (
-      <SafeAreaView style={[{width: "100%", height: "100%", backgroundColor: "#504B8D"}]}>
+      <SafeAreaView style={[{ width: "100%", height: "100%", backgroundColor: "#504B8D" }]}>
 
-                  <View style={[{flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24}]}>
-                      <Ionicons style={[{marginRight: 55}]}name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack()}}/>
-                      <View 
-                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005"}]}>
-                                <Text
-                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Buffalo', fontSize: 28}]}>
-                                        Profile
-                                </Text>    
-                        </View>
-                        <MaterialCommunityIcons style={[{marginLeft: 55}]} name="contacts" size={32} color={"#504B8D"}/>
-                    </View>
-                    <ScrollView>
-                    
-                  <View style={{ marginTop: 38, alignItems: "center" }}>
-                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
+        <View style={[{ flexDirection: 'row', justifyContext: 'space-between', alignItems: 'center', paddingHorizontal: 24, marginTop: 24 }]}>
+          <Ionicons style={[{ marginRight: 55 }]} name="chevron-back" size={32} color={Themes.synastry_styles.resurface_button} onPress={() => { navigation.goBack() }} />
+          <View
+            style={[styles.inactiveButton, { backgroundColor: "#BFA005", borderColor: "#BFA005" }]}>
+            <Text
+              style={[styles.inactiveText, { color: "white", fontFamily: 'Buffalo', fontSize: 28 }]}>
+              Profile
+            </Text>
+          </View>
+          <MaterialCommunityIcons style={[{ marginLeft: 55 }]} name="contacts" size={32} color={"#504B8D"} />
+        </View>
+        <ScrollView>
 
-                    <View style={{ marginTop: 14, alignItems: "center" }}>
-                    <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4}]}>
-                    <Pressable
-                      onPress = {pickImage}>
-                        <Image
-                            source={
-                              User.avatar
-                              ? { uri: User.avatar }
-                              : require("./assets/default_avatar_edit.png")
-                            }
-                            style={[{width: 136, height: 136, borderRadius: 68}]}
-                        />
-                        </Pressable>
-                    </View>
-                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+          <View style={{ marginTop: 38, alignItems: "center" }}>
+            <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4 }]}>
+
+              <View style={{ marginTop: 14, alignItems: "center" }}>
+                <View style={[{ shadowColor: "#151734", shadowRadius: 30, shadowOpacity: 0.4 }]}>
+                  <Pressable
+                    onPress={pickImage}>
+                    <Image
+                      source={
+                        avatar
+                          ? { uri: avatar }
+                          : require("./assets/default_avatar_edit.png")
+                      }
+                      style={[{ width: 136, height: 136, borderRadius: 68 }]}
+                    />
+                  </Pressable>
                 </View>
+                {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+              </View>
 
 
 
 
 
-                      {/* <UploadProfilePic passImage={getImageFromUploader} image={User.avatar} /> */}
-                      <View style={{ marginTop: 25, alignItems: "center" }}>
-                          <TextInput
-                            style={[{ color: 'white', width: 332, height: 60, margin: 12, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            fontSize={50}
-                            onChangeText={handleNameChange}
-                            value={name}
-                            placeholder="Name"
-                            placeholderTextColor="#BFBEBE"
-                          />
-                          </View>
-                    </View>
-                    <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12}}>
-                    <View 
-                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start"}]}>
-                                <Text
-                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right"}]}>
-                                        Describe Your Health Journey
-                                </Text>    
-                        </View>
-                        <TextInput
-                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={handleTagsChange}
-                            value={tags}
-                            placeholderTextColor="#BFBEBE"
-                            placeholder="Hashtags (private; used in search algorithm)"
-                          />
-                      </View>
+              {/* <UploadProfilePic passImage={getImageFromUploader} image={User.avatar} /> */}
+              <View style={{ marginTop: 25, alignItems: "center" }}>
+                <TextInput
+                  style={[{ color: 'white', width: 332, height: 60, margin: 12, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth: 3, }]}
+                  fontSize={50}
+                  onChangeText={handleNameChange}
+                  value={name}
+                  placeholder="Name"
+                  placeholderTextColor="#BFBEBE"
+                />
+              </View>
+            </View>
+            <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12 }}>
+              <View
+                style={[styles.inactiveButton, { backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start" }]}>
+                <Text
+                  style={[styles.inactiveText, { color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right" }]}>
+                  Describe Your Health Journey
+                </Text>
+              </View>
+              <TextInput
+                style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3, }]}
+                onChangeText={handleTagsChange}
+                value={tags}
+                placeholderTextColor="#BFBEBE"
+                placeholder="Hashtags (private; used in search algorithm)"
+              />
+            </View>
 
 
 
 
-                      <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12}}>
-                    <View 
-                                    style={[styles.inactiveButton, {backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start"}]}>
-                                <Text
-                                    style={[styles.inactiveText, {color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right"}]}>
-                                        Contact
-                                </Text>    
-                        </View>
-                        <TextInput
-                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={handleNumberChange}
-                            value={number}
-                            placeholderTextColor="#BFBEBE"
-                            placeholder="Phone Number"
-                          />
-                                                  <TextInput
-                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={handleEmailChange}
-                            value={email}
-                            placeholderTextColor="#BFBEBE"
-                            placeholder="Email"
-                          />
-                                                  <TextInput
-                            style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3,}]}
-                            onChangeText={handleInstaChange}
-                            value={insta}
-                            placeholderTextColor="#BFBEBE"
-                            placeholder="Instagram"
-                          />
-                      </View>
-                    {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
-                </View>
-              </ScrollView>
+            <View style={{ flexDireaction: "row", marginTop: 38, alignItems: "flex-start", justifyContent: "flex-start", marginRight: "auto", marginLeft: 12 }}>
+              <View
+                style={[styles.inactiveButton, { backgroundColor: "#BFA005", borderColor: "#BFA005", width: '100%', marginLeft: 0, borderRadius: 2, justifyContent: "flex-start" }]}>
+                <Text
+                  style={[styles.inactiveText, { color: "white", fontFamily: 'Montserrat-Bold', fontSize: 18, textAlign: "right" }]}>
+                  Contact
+                </Text>
+              </View>
+              <TextInput
+                style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3, }]}
+                onChangeText={handleNumberChange}
+                value={number}
+                placeholderTextColor="#BFBEBE"
+                placeholder="Phone Number"
+              />
+              <TextInput
+                style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3, }]}
+                onChangeText={handleEmailChange}
+                value={email}
+                placeholderTextColor="#BFBEBE"
+                placeholder="Email"
+              />
+              <TextInput
+                style={[{ color: 'white', width: 332, height: 40, margin: 12, borderBottomColor: 'white', borderBottomWidth: 3, }]}
+                onChangeText={handleInstaChange}
+                value={insta}
+                placeholderTextColor="#BFBEBE"
+                placeholder="Instagram"
+              />
+            </View>
+            {/* <Text style={styles.name}>{this.state.user.name}</Text> */}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
   // Search for key word by user to find if it appears in the dictionary of registered planets total, if so, add key to solar_system dictionary
   // REPLACES one key in the entries --> looks for empty, otherwise will replace whatever user wants to replace
-  
-  const PlanetSearch = ({navigation}) => {
+
+  const PlanetSearch = ({ navigation }) => {
     let [searched, searchText] = useState('');
     let [found_index, setFoundIndex] = useState(-1);
 
@@ -1136,7 +1142,7 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
       }
     }, [searched])
 
-    const Bold = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+    const Bold = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
     return (
       <SafeAreaView style={styles.search_container}>
@@ -1147,31 +1153,31 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
           <View style={styles.search_top_third}>
             <Pressable
               style={styles.resurfaceButton}
-              onPress = {() => {
+              onPress={() => {
                 navigation.navigate('Your Solar System');
               }}>
-                <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button}/>
+              <Ionicons name="chevron-up-outline" size={32} color={Themes.synastry_styles.resurface_button} />
             </Pressable>
             <View style={styles.search_for_planet_text}>
-                <Text style={[styles.my_solar_system_text, {fontSize: 30}]}>
-                  Discover Health Journeys!
-                </Text>
+              <Text style={[styles.my_solar_system_text, { fontSize: 30 }]}>
+                Discover Health Journeys!
+              </Text>
             </View>
           </View>
           <View style={styles.search_bottom_third}>
 
-            
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
               <TextInput
-                style={[styles.search_textbox, {backgroundColor: '#BFBEBE', color:"navy"}]}
+                style={[styles.search_textbox, { backgroundColor: '#BFBEBE', color: "navy" }]}
                 placeholder="Search "
                 placeholderTextColor={"white"}
                 onChangeText={text => searchText(text)}
                 value={searched}
-                />
+              />
             </TouchableWithoutFeedback>
             <View style={{ height: '5%' }} />
-            {found_index != -1 &&    
+            {found_index != -1 &&
               <View style={styles.planet_to_visit_preview}>
                 <View style={styles.planet_preview_text_box}>
                   <Text style={styles.planet_preview_text}>
@@ -1208,13 +1214,13 @@ SURE U STORE THE UPDATED IMAGE PARAMETER IN A GLOBAL DICTIONARY HERE*/}
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Your Solar System" component={HomePage} options={{headerShown: false}} />
-        <Stack.Screen name="Visiting a Planet" component={PlanetPage} options={{headerShown: false}}/>
-        <Stack.Screen name="Your Personal Space" component={SunPage} options={{headerShown: false}} />
-        <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{headerShown: false}} />
-        <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{headerShown: false}} />
-        <Stack.Screen name="Profile" component={Profile} options={{headerShown: false}} />
-        <Stack.Screen name="Make a Post" component={MakePost} options={{headerShown: false}} />
+        <Stack.Screen name="Your Solar System" component={HomePage} options={{ headerShown: false }} />
+        <Stack.Screen name="Visiting a Planet" component={PlanetPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Your Personal Space" component={SunPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Create a Planet" component={PlanetCreation} options={{ headerShown: false }} />
+        <Stack.Screen name="Search For a Planet" component={PlanetSearch} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="Make a Post" component={MakePost} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -1259,12 +1265,12 @@ const styles = StyleSheet.create({
     fontSize: '24',
     color: 'white',
     textShadowColor: 'rgba(255, 255, 255, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 5,
   },
   add_planet_box: {
     height: '80%',
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'center',
   },
   search_top_third: {
@@ -1298,8 +1304,8 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     elevation: 2, // Android
     flexDirection: 'row',
-},
-inactiveButton: {
+  },
+  inactiveButton: {
     backgroundColor: 'rgba(255, 255, 255, 1)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1320,24 +1326,24 @@ inactiveButton: {
     shadowRadius: 1, //IOS
     elevation: 2, // Android
     flexDirection: 'row',
-},
+  },
 
-activeText: {
+  activeText: {
     fontSize: 14,
     color: 'white',
     fontFamily: 'Montserrat-Bold',
-},
+  },
 
-inactiveText: {
+  inactiveText: {
     fontSize: 14,
     color: '#0F0B4D',
     fontFamily: 'Montserrat-Bold',
-},
+  },
   addToSolarSys: {
     flexDirection: "row",
     alignItems: "center",
-    height: 60, 
-    width: "75%",  
+    height: 60,
+    width: "75%",
     justifyContent: "center",
     alignSelf: "center",
     flexDirection: "row",
@@ -1357,7 +1363,7 @@ inactiveText: {
     fontSize: '24',
     color: 'white',
     textShadowColor: 'rgba(255, 255, 255, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 5,
   },
   search_textbox: {
@@ -1483,7 +1489,7 @@ inactiveText: {
     height: '9%',
     textAlign: 'center',
     fontFamily: 'Montserrat-Bold',
-    color: 'white', 
+    color: 'white',
     fontSize: 12,
   },
 
@@ -1567,9 +1573,9 @@ inactiveText: {
     fontSize: '24',
     textAlign: 'center',
     textShadowColor: 'rgba(228, 151, 38, 0.8)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 7,
-    fontSize: 40, 
+    fontSize: 40,
     fontFamily: 'Norwester',
   },
   planets_visual: {
